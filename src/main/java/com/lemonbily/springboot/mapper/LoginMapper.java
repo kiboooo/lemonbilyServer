@@ -13,23 +13,20 @@ import java.util.List;
 @Mapper
 public interface LoginMapper {
 
-    @Select("select * from Login")
-    List<Login> findAll();
+    public List<Login> findAll();
 
-    @Insert(" insert into Login ( Name,LPassWord,LPhone ) values (#{Name},#{LPassWord},#{LPhone}) ")
-    public int add(Login login);
+//    public int add(Login login);
 
-
-    @Delete(" delete from Login where id= #{id} ")
-    public void delete(int id);
-
-    @Select("select * from Login where id= #{id} ")
-    public Login get(int id);
-
-    @Update("update Login set LPassWord=#{LPassWord} where id=#{Id} ")
-    public int updatePassWord(Login login);
-
-    @Update("update Login set LPhone=#{LPhone} where id=#{Id} ")
-    public int updatePhone(Login login);
+//    @Delete(" delete from Login where id= #{id} ")
+//    public void delete(int id);
+//
+//    @Select("select * from Login where id= #{id} ")
+//    public Login get(int id);
+//
+//    @Update("update Login set LPassWord=#{LPassWord} where id=#{Id} ")
+//    public int updatePassWord(Login login);
+//
+//    @Update("update Login set LPhone=#{LPhone} where id=#{Id} ")
+//    public int updatePhone(Login login);
 
 }
