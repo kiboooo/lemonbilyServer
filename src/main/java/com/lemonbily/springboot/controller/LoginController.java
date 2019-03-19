@@ -16,6 +16,6 @@ public class LoginController {
     @RequestMapping("/getLoginAll")
     @ResponseBody
     public List<Login> getLoginAll() {
-        return loginMapper.findAll();
+        return loginMapper.selectAll();
     }
 }
