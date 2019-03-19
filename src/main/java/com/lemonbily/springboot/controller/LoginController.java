@@ -38,7 +38,7 @@ public class LoginController {
         System.out.println("last Time is :" + last);
         System.out.println("now Time is :" + System.currentTimeMillis());
         System.out.println("compare to  :" +  (System.currentTimeMillis() - last));
-        return (System.currentTimeMillis() - last ) < liveTimeLimit;
+        return (System.currentTimeMillis() - last ) < liveTimeLimit ;
     }
 
 }
