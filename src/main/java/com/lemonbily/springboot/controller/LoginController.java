@@ -13,9 +13,12 @@ import java.util.List;
 public class LoginController {
 
     @Autowired(required = false) LoginMapper loginMapper;
+
     @RequestMapping("/getLoginAll")
     @ResponseBody
     public List<Login> getLoginAll() {
         return loginMapper.selectAll();
     }
+
+
 }
