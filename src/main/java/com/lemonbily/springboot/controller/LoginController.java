@@ -15,7 +15,7 @@ import java.util.List;
 public class LoginController {
 
 
-    private static final long liveTimeLimit = 20*24*3600;// day * hour * second
+    private static final long liveTimeLimit = 20*24*3600*1000;// day * hour * second
     @Autowired(required = false) LoginMapper loginMapper;
 
     @RequestMapping("/getLoginAll")
@@ -34,7 +34,11 @@ public class LoginController {
         Date lastDate = loginMapper.liveTimeCheck(id);
         if (lastDate == null )
             return false;
-        return (System.currentTimeMillis() - lastDate.getTime()) < liveTimeLimit;
+        long last = lastDate.getTime();
+        System.out.println("last Time is :" + last);
+        System.out.println("now Time is :" + System.currentTimeMillis());
+        System.out.println("compare to  :" +  (System.currentTimeMillis() - last));
+        return (System.currentTimeMillis() - last ) < liveTimeLimit;
     }
 
 }
