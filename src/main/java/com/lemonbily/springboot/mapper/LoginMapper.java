@@ -3,6 +3,7 @@ package com.lemonbily.springboot.mapper;
 import com.lemonbily.springboot.entity.Login;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -39,7 +40,7 @@ public interface LoginMapper {
      *              否则，需要重新登陆。
      */
 
-    boolean liveTimeCheck(int LoginID);
+    Date liveTimeCheck(int LoginID);
 
 
 }
