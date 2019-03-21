@@ -16,7 +16,8 @@ public class LoginController {
 
 
     private static final long liveTimeLimit = 20*24*3600*1000;// day * hour * second
-    @Autowired(required = false) LoginMapper loginMapper;
+    @Autowired(required = false)
+    LoginMapper loginMapper;
 
     @RequestMapping("/getLoginAll")
     @ResponseBody
