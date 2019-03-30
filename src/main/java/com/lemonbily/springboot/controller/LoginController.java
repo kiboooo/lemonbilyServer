@@ -1,17 +1,19 @@
 package com.lemonbily.springboot.controller;
 
+
 import com.lemonbily.springboot.entity.Login;
 import com.lemonbily.springboot.mapper.LoginMapper;
+import com.lemonbily.springboot.util.JsonUtil;
+import com.lemonbily.springboot.util.ResponseCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.List;
 
-@Controller
+@RestController
 public class LoginController {
 
 
@@ -19,27 +21,42 @@ public class LoginController {
     @Autowired(required = false)
     LoginMapper loginMapper;
 
-    @RequestMapping("/getLoginAll")
-    @ResponseBody
-    public List<Login> getLoginAll() {
-        return loginMapper.selectAll();
+    @RequestMapping(value = "/getLoginAll", produces = "application/json;charset=UTF-8")
+    public String getLoginAll() {
+        List<Login> list= loginMapper.selectAll();
+        if ((list) != null) {
+            return JsonUtil
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE, list)
+                    .toJSONString();
+        } else {
+            return JsonUtil
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_FAIL_CODE,
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL)
+                    .toJSONString();
+        }
     }
 
 
-    @RequestMapping("/checkLiveTime/{id}")
-    @ResponseBody
-    public boolean checkLiveTime(@PathVariable("id") int id) {
+    @RequestMapping(value = "/checkLiveTime/{id}",produces = "application/json;charset=UTF-8")
+    public String checkLiveTime(@PathVariable("id") int id) {
         if (id < 1000) {
-            return false;
+            return JsonUtil
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_FAIL_CODE, "请求账号错误")
+                    .toJSONString();
         }
         Date lastDate = loginMapper.liveTimeCheck(id);
-        if (lastDate == null )
-            return false;
-        long last = lastDate.getTime();
-        System.out.println("last Time is :" + last);
-        System.out.println("now Time is :" + System.currentTimeMillis());
-        System.out.println("compare to  :" +  (System.currentTimeMillis() - last));
-        return (System.currentTimeMillis() - last ) < liveTimeLimit ;
+        if (lastDate == null
+                || ((System.currentTimeMillis() - lastDate.getTime()) >= liveTimeLimit))
+            return JsonUtil
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_UNLIFE_CODE,
+                            ResponseCodeUtil.LEMONBILY_LOGIN_UNLIFE_CODE_CONTENT)
+                    .toJSONString();
+        else {
+            return JsonUtil
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_LIFE_CODE,
+                            ResponseCodeUtil.LEMONBILY_LOGIN_LIFE_CODE_CONTENT)
+                    .toJSONString();
+        }
     }
 
 }

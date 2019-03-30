@@ -252,6 +252,5 @@
             <generatedKey column="VID" sqlStatement="Mysql" identity="true" />
         </table>
 
-
     </context>
 </generatorConfiguration>
