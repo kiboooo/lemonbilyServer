@@ -7,7 +7,6 @@ public class JsonUtil {
     private static final String RESPONSE_CODE = "code";
     private static final String RESPONSE_TOKEN = "token";
     private static final String RESPONSE_DATA = "data";
-    private static final String RESPONSE_MSG = "msg";
 
 
     public static JSONObject generateJsonResponse(int code, Object data) {

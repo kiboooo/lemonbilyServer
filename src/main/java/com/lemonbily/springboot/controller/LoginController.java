@@ -1,28 +1,49 @@
 package com.lemonbily.springboot.controller;
 
 
+import com.lemonbily.springboot.bean.CommonBean;
 import com.lemonbily.springboot.entity.Login;
 import com.lemonbily.springboot.mapper.LoginMapper;
 import com.lemonbily.springboot.util.JsonUtil;
 import com.lemonbily.springboot.util.ResponseCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.beans.Beans;
 import java.util.Date;
 import java.util.List;
 
 @RestController
-public class LoginController {
+@RequestMapping("/LoginController")
+public class LoginController extends BaseController<Login> {
 
-
-    private static final long liveTimeLimit = 20*24*3600*1000;// day * hour * second
     @Autowired(required = false)
     LoginMapper loginMapper;
 
+    @Override
+    @RequestMapping(value = "/registered",
+            params = "com.lemonbily.springboot.entity.Login",
+            method = RequestMethod.POST,
+            produces = "application/json;charset=UTF-8")
+    public String insert(@RequestBody Login record) {
+        return null;
+    }
+
+    @Override
+    @RequestMapping(value = "/logout/{id}", produces = "application/json;charset=UTF-8")
+    public String deleteByID(@PathVariable("id") int id) {
+        return null;
+    }
+
+    @Override
+    @RequestMapping(value = "/changePassWord" ,params = "", produces = "application/json;charset=UTF-8")
+    public String updete(Login record) {
+        return null;
+    }
+
+    @Override
     @RequestMapping(value = "/getLoginAll", produces = "application/json;charset=UTF-8")
-    public String getLoginAll() {
+    public String selectAll() {
         List<Login> list= loginMapper.selectAll();
         if ((list) != null) {
             return JsonUtil
@@ -36,6 +57,11 @@ public class LoginController {
         }
     }
 
+    @Override
+    @RequestMapping(value = "/getLogin/{id}", produces = "application/json;charset=UTF-8")
+    public String selectByID(@PathVariable("id") int id) {
+        return null;
+    }
 
     @RequestMapping(value = "/checkLiveTime/{id}",produces = "application/json;charset=UTF-8")
     public String checkLiveTime(@PathVariable("id") int id) {
@@ -46,7 +72,7 @@ public class LoginController {
         }
         Date lastDate = loginMapper.liveTimeCheck(id);
         if (lastDate == null
-                || ((System.currentTimeMillis() - lastDate.getTime()) >= liveTimeLimit))
+                || ((System.currentTimeMillis() - lastDate.getTime()) >= CommonBean.liveTimeLimit))
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_UNLIFE_CODE,
                             ResponseCodeUtil.LEMONBILY_LOGIN_UNLIFE_CODE_CONTENT)
@@ -58,5 +84,4 @@ public class LoginController {
                     .toJSONString();
         }
     }
-
 }

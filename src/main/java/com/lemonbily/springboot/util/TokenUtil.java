@@ -1,8 +1,13 @@
 package com.lemonbily.springboot.util;
 
+import com.lemonbily.springboot.bean.CommonBean;
+import com.lemonbily.springboot.bean.Token;
+import com.lemonbily.springboot.controller.LoginController;
 import com.lemonbily.springboot.entity.Login;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import javax.xml.crypto.Data;
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -10,11 +15,10 @@ public class TokenUtil {
 
     private static final String SALT = "lemon";
 
-
     //存储了所有用户的Token
-    private static Map<String, String> tokenMap = new ConcurrentHashMap<>();
+    private static Map<String, Token> tokenMap = new ConcurrentHashMap<>();
 
-    public static void generateToken(Object object) {
+    public static void generateTokenAddMap(Object object) {
         if (object == null) {
             return;
         }
@@ -33,28 +37,35 @@ public class TokenUtil {
     }
 
     public static boolean isTokenEffective(String idKey,String token) {
-        String mToken = tokenMap.get(idKey);
-        if (mToken == null) {
-            return false;
-        }
-        return mToken.equals(token);
+        Token mToken = tokenMap.get(idKey);
+        return mToken != null
+                && isTokenSurvive(mToken.getLiveTimeLimit())
+                && mToken.getToken().equals(token);
     }
 
-    public static void updateToken(String idKey, String token) {
-        tokenMap.replace(idKey, token);
+    public static void updateToken(Login login) {
+        if(null == login) {
+            return ;
+        }
+       tokenMap.replace(login.getId().toString(), generateLoginUserToken(login));
     }
 
     public static void removeToken(String idKey) {
         tokenMap.remove(idKey);
     }
 
-    private static String generateLoginUserToken(Login login) {
+    private static Token generateLoginUserToken(Login login) {
         String token = login.getId()
                 + login.getLpassword()
                 + login.getName()
                 + login.getLphone()
                 + SALT;
-        return DigestUtils.md5Hex(token);
+
+        return new Token(DigestUtils.md5Hex(token), login.getLlivetime());
+    }
+
+    private static boolean isTokenSurvive(Date limit) {
+        return (System.currentTimeMillis() - limit.getTime()) < CommonBean.liveTimeLimit;
     }
 
 }
