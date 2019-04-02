@@ -39,9 +39,6 @@
   <update id="update" parameterType="com.lemonbily.springboot.entity.Login">
     UPDATE login
     <set>
-      <if test="id != null">
-        Id = #{id,jdbcType=INTEGER},
-      </if>
       <if test="name != null">
         Name = #{name,jdbcType=VARCHAR},
       </if>

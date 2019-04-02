@@ -29,7 +29,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         boolean result = false;
         String token = request.getHeader("token");
-        String userId = request.getParameter("userId");
+        String userId = request.getHeader("id");
 
         logger.info("------------AuthenticationInterceptor-------------");
         logger.info("token ：" + token);

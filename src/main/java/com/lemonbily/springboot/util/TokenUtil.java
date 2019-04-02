@@ -61,10 +61,9 @@ public class TokenUtil {
     public static void removeToken(String idKey) {
         tokenMap.remove(idKey);
     }
-
+    //TODO: 测试环境下获取测试用Token，上线环境下必须声明为 private
     public static Token generateLoginUserToken(Login login) {
         String token = login.getId()
-                + login.getLpassword()
                 + login.getName()
                 + login.getLphone()
                 + SALT;

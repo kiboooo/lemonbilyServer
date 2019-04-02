@@ -37,9 +37,11 @@ public class ResponseCodeUtil {
      */
     //登陆状态
     public static final int LEMONBILY_LOGIN_ID_ERRO_CODE = 1001;
-    public static final String LEMONBILY_LOGIN_ID_ERRO_CODE_CONTENT = "登陆用户名错误";
     public static final int LEMONBILY_LOGIN_PASSWORD_ERRO_CODE = 1002;
     public static final String LEMONBILY_LOGIN_PASSWORD_ERRO_CODE_CONTENT = "登陆密码错误";
+    public static final String LEMONBILY_LOGIN_USER_ERRO_CODE_CONTENT = "登陆对象为空";
+    public static final String LEMONBILY_LOGIN_USER_SUCCESS_CODE_CONTENT = "登陆成功";
+    public static final String LEMONBILY_LOGIN_ID_UNCHECK_CODE_CONTENT = "登陆账号错误，请确认账户或前往注册";
     //token有效性
     public static final int LEMONBILY_LOGIN_LIFE_CODE = 1003;
     public static final String LEMONBILY_LOGIN_LIFE_CODE_CONTENT = "账户存活有效";

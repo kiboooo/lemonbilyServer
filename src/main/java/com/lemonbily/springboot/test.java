@@ -1,5 +1,9 @@
 package com.lemonbily.springboot;
 
-public class test {
+import org.apache.commons.codec.digest.DigestUtils;
 
+public class test {
+    public static void main(String[] args) {
+        System.out.println(DigestUtils.md5Hex("admin"));
+    }
 }
