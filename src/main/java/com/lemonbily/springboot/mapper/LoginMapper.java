@@ -24,6 +24,10 @@ public interface LoginMapper {
 
     Login selectByID(int id);
 
+    int update(Login login);
+
+    int deleteByID(int id);
+
     /**
      *  用户登陆生命周期查询
      * @param LoginID 登陆的用户id
@@ -32,4 +36,5 @@ public interface LoginMapper {
      */
 
     Date liveTimeCheck(int LoginID);
+
 }

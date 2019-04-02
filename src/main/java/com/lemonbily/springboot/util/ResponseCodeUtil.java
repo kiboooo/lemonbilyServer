@@ -35,14 +35,42 @@ public class ResponseCodeUtil {
      * 登陆操作相关状态码
      * 状态码范围：1001-1050
      */
+    //登陆状态
     public static final int LEMONBILY_LOGIN_ID_ERRO_CODE = 1001;
     public static final String LEMONBILY_LOGIN_ID_ERRO_CODE_CONTENT = "登陆用户名错误";
     public static final int LEMONBILY_LOGIN_PASSWORD_ERRO_CODE = 1002;
     public static final String LEMONBILY_LOGIN_PASSWORD_ERRO_CODE_CONTENT = "登陆密码错误";
+    //token有效性
     public static final int LEMONBILY_LOGIN_LIFE_CODE = 1003;
     public static final String LEMONBILY_LOGIN_LIFE_CODE_CONTENT = "账户存活有效";
     public static final int LEMONBILY_LOGIN_UNLIFE_CODE = 1004;
     public static final String LEMONBILY_LOGIN_UNLIFE_CODE_CONTENT = "账户已经失活，请重新登陆";
+    //注册相关
+    public static final int LEMONBILY_LOGIN_REGISTER_SUCCESS_CODE = 1005;
+    public static final String LEMONBILY_LOGIN_REGISTER_SUCCESS_CONTENT = "账户注册成功";
+    public static final int LEMONBILY_LOGIN_REGISTER_FAIL_CODE = 1006;
+    public static final String LEMONBILY_LOGIN_REGISTER_FAIL_CONTENT_LOGIN_NULL = "账户注册失败，注册对象为空";
+    public static final String LEMONBILY_LOGIN_REGISTER_FAIL_CONTENT_LOGIN_ID_NULL = "账户注册失败，注册账号为空";
+    public static final String LEMONBILY_LOGIN_REGISTER_FAIL_CONTENT_LOGIN_NAME_NULL = "账户注册失败，注册用户名为空";
+    public static final String LEMONBILY_LOGIN_REGISTER_FAIL_CONTENT_LOGIN_PASS_NULL = "账户注册失败，注册用户密码为空";
+    public static final String LEMONBILY_LOGIN_REGISTER_FAIL_CONTENT_LOGIN_PHONE_NULL = "账户注册失败，注册电话为空";
+    public static final int LEMONBILY_LOGIN_LOGOUT_SUCCESS_CODE = 1007;
+    public static final String LEMONBILY_LOGIN_LOGOUT_SUCCESS_CODE_CONTENT = "账户登出成功";
+    public static final int LEMONBILY_LOGIN_LOGOUT_FAIL_CODE = 1008;
+    public static final String LEMONBILY_LOGIN_LOGOUT_FAIL_CODE_CONTENT = "账户登出失败";
+    public static final int LEMONBILY_LOGIN_PERMANENTLOGOUT_SUCCESS_CODE = 1009;
+    public static final String LEMONBILY_LOGIN_PERMANENTLOGOUT_SUCCESS_CODE_CONTENT = "账户永久注销成功";
+    public static final int LEMONBILY_LOGIN_PERMANENTLOGOUT_FAIL_CODE = 1010;
+    public static final String LEMONBILY_LOGIN_PERMANENTLOGOUT_FAIL_CODE_CONTENT = "账户永久注销失败";
+
+    /**
+     * 用户个人中心操作相关状态码
+     * 状态码范围：1051-1100
+     */
+    public static final int LEMONBILY_LOGIN_CHANGE_PASSWORD_SUCCESS_CODE = 1051;
+    public static final String LEMONBILY_LOGIN_CHANGE_PASSWORD_SUCCESS_CODE_CONTENT = "修改密码成功";
+    public static final int LEMONBILY_LOGIN_CHANGE_PASSWORD_FAIL_CODE = 1052;
+    public static final String LEMONBILY_LOGIN_CHANGE_PASSWORD_FAIL_CODE_CONTENT = "修改密码失败";
 
 
 

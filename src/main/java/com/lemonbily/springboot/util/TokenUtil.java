@@ -18,20 +18,22 @@ public class TokenUtil {
     //存储了所有用户的Token
     private static Map<String, Token> tokenMap = new ConcurrentHashMap<>();
 
-    public static void generateTokenAddMap(Object object) {
+    public static String generateTokenAddMap(Object object) {
+        Token mToken = new Token() ;
         if (object == null) {
-            return;
+            return "";
         }
         switch (object.getClass().getName()) {
             case "com.lemonbily.springboot.entity.Login": {
                 Login login = (Login) object;
+                mToken = generateLoginUserToken(login);
                 if (tokenMap.containsKey(login.getId().toString())){
                     tokenMap.replace(login.getId().toString(),
-                            generateLoginUserToken(login));
+                            mToken);
                 }else {
                     tokenMap.put(
                             login.getId().toString(),
-                            generateLoginUserToken(login)
+                            mToken
                     );
                 }
                 break;
@@ -39,6 +41,7 @@ public class TokenUtil {
             default:
                 break;
         }
+        return mToken.getToken();
     }
 
     public static boolean isTokenEffective(String idKey,String token) {

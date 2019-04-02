@@ -37,7 +37,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         if (null == token || null == userId) {
             JSONObject object = JsonUtil.generateJsonResponse(
                     ResponseCodeUtil.LEMONBILY_LOGIN_UNLIFE_CODE,
-                    ResponseCodeUtil.LEMONBILY_LOGIN_UNLIFE_CODE_CONTENT);
+                    ResponseCodeUtil.LEMONBILY_LOGIN_UNLIFE_CODE_CONTENT,null);
             response.setContentType("text/json;charset=UTF-8");
             response.getWriter().println(object);
         }else{
@@ -47,7 +47,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             }else {
                 JSONObject object = JsonUtil.generateJsonResponse(
                         ResponseCodeUtil.LEMONBILY_LOGIN_UNLIFE_CODE,
-                        ResponseCodeUtil.LEMONBILY_LOGIN_UNLIFE_CODE_CONTENT);
+                        ResponseCodeUtil.LEMONBILY_LOGIN_UNLIFE_CODE_CONTENT,null);
                 response.setContentType("text/json;charset=UTF-8");
                 response.getWriter().println(object);
 

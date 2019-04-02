@@ -25,40 +25,151 @@ public class LoginController extends BaseController<Login> {
     LoginMapper loginMapper;
     org.slf4j.Logger logger = LoggerFactory.getLogger(this.getClass());
 
+
+    /**
+     * 注册接口
+     * url：/LoginController/registered
+     * method : post
+     * 参数：login对象的json数据
+     *
+     * @param record
+     * @return
+     */
     @Override
     @RequestMapping(value = "/registered",
             params = "com.lemonbily.springboot.entity.Login",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
     public String insert(@RequestBody Login record) {
+
+        /*
+         *  校验传入对象开始
+         */
+
+        if (null == record) {
+            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_FAIL_CODE,
+                    ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_FAIL_CONTENT_LOGIN_NULL, null)
+                    .toJSONString();
+        }
+        if (null == record.getId() || record.getId() < 1000) {
+            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_FAIL_CODE,
+                    ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_FAIL_CONTENT_LOGIN_ID_NULL, null)
+                    .toJSONString();
+        }
+        if (null == record.getName() || record.getName().equals("")) {
+            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_FAIL_CODE,
+                    ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_FAIL_CONTENT_LOGIN_NAME_NULL, null)
+                    .toJSONString();
+        }
+        if (null == record.getLpassword() || record.getLpassword().equals("")) {
+            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_FAIL_CODE,
+                    ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_FAIL_CONTENT_LOGIN_PASS_NULL, null)
+                    .toJSONString();
+        }
+        if (null == record.getLphone() || record.getLphone().equals("")) {
+            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_FAIL_CODE,
+                    ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_FAIL_CONTENT_LOGIN_PHONE_NULL, null)
+                    .toJSONString();
+        }
+        if (loginMapper.insert(record) < 1) {
+            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_FAIL_CODE,
+                    ResponseCodeUtil.LEMONBILY_INSERT_ERRO_CODE_CONTENT, null)
+                    .toJSONString();
+        }
+        /*
+         *  校验传入对象结束
+         */
+
+        String mToken = TokenUtil.generateTokenAddMap(record);
+        return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_SUCCESS_CODE,
+                ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_SUCCESS_CONTENT, mToken, null)
+                .toJSONString();
+    }
+
+    /**
+     * 登陆接口
+     */
+    @RequestMapping(value = "/registered",
+            params = "com.lemonbily.springboot.entity.Login",
+            method = RequestMethod.POST,
+            produces = "application/json;charset=UTF-8")
+    public String login(@RequestBody Login user) {
         return null;
     }
 
-    @Override
+    /**
+     * 用户普通注销接口
+     * 主要清除TokenUtils 中存放的Token
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/logout/{id}", produces = "application/json;charset=UTF-8")
+    public String logout(@PathVariable("id") int id){
+        if (id < 1000) {
+            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_LOGOUT_FAIL_CODE,
+                    ResponseCodeUtil.LEMONBILY_LOGIN_LOGOUT_FAIL_CODE_CONTENT, null)
+                    .toJSONString();
+        }
+        TokenUtil.removeToken(String.valueOf(id));
+        return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_LOGOUT_SUCCESS_CODE,
+                ResponseCodeUtil.LEMONBILY_LOGIN_LOGOUT_SUCCESS_CODE_CONTENT, null)
+                .toJSONString();
+    }
+
+    /**
+     * 永久注销账号
+     * 删除Login表中的用户的信息。
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    @RequestMapping(value = "/permanentLogout/{id}", produces = "application/json;charset=UTF-8")
     public String deleteByID(@PathVariable("id") int id) {
-        return null;
+        if (loginMapper.deleteByID(id) < 1) {
+            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_PERMANENTLOGOUT_FAIL_CODE,
+                    ResponseCodeUtil.LEMONBILY_LOGIN_PERMANENTLOGOUT_FAIL_CODE_CONTENT, null)
+                    .toJSONString();
+        }
+        return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_PERMANENTLOGOUT_SUCCESS_CODE,
+                ResponseCodeUtil.LEMONBILY_LOGIN_PERMANENTLOGOUT_SUCCESS_CODE_CONTENT, null)
+                .toJSONString();
     }
 
     @Override
-    @RequestMapping(value = "/changePassWord" ,params = "", produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/changePassWord",
+            params = "com.lemonbily.springboot.entity.Login",
+            produces = "application/json;charset=UTF-8")
     public String updete(Login record) {
-        return null;
+        if (null == record || loginMapper.update(record) < 1) {
+            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_CHANGE_PASSWORD_FAIL_CODE,
+                    ResponseCodeUtil.LEMONBILY_LOGIN_CHANGE_PASSWORD_FAIL_CODE_CONTENT, null)
+                    .toJSONString();
+        }
+        return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_CHANGE_PASSWORD_SUCCESS_CODE,
+                ResponseCodeUtil.LEMONBILY_LOGIN_CHANGE_PASSWORD_SUCCESS_CODE_CONTENT, null)
+                .toJSONString();
+
     }
 
+    /**
+     * 获取login表中所有用户的数据
+     * @return
+     */
     @Override
     @RequestMapping(value = "/getLoginAll", produces = "application/json;charset=UTF-8")
     public String selectAll() {
-        List<Login> list= loginMapper.selectAll();
+        List<Login> list = loginMapper.selectAll();
         if ((list) != null) {
             TokenUtil.generateTokenAddMap(list.get(0));
             return JsonUtil
-                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE, list)
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
+                            ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, list)
                     .toJSONString();
         } else {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_FAIL_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT)
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
                     .toJSONString();
         }
     }
@@ -71,22 +182,29 @@ public class LoginController extends BaseController<Login> {
         if (null == login) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT )
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
                     .toJSONString();
-        }else{
+        } else {
             Token token = TokenUtil.generateLoginUserToken(login);
             return JsonUtil
-                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,token.getToken(), login)
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
+                            ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT,
+                            token.getToken(), login)
                     .toJSONString();
         }
 
     }
 
-    @RequestMapping(value = "/checkLiveTime/{id}",produces = "application/json;charset=UTF-8")
+    /**
+     * 检查该用户的是否有效存活。
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/checkLiveTime/{id}", produces = "application/json;charset=UTF-8")
     public String checkLiveTime(@PathVariable("id") int id) {
         if (id < 1000) {
             return JsonUtil
-                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_FAIL_CODE, "请求账号错误")
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_FAIL_CODE, "请求账号错误", null)
                     .toJSONString();
         }
         Date lastDate = loginMapper.liveTimeCheck(id);
@@ -94,12 +212,12 @@ public class LoginController extends BaseController<Login> {
                 || ((System.currentTimeMillis() - lastDate.getTime()) >= CommonBean.liveTimeLimit))
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_UNLIFE_CODE,
-                            ResponseCodeUtil.LEMONBILY_LOGIN_UNLIFE_CODE_CONTENT)
+                            ResponseCodeUtil.LEMONBILY_LOGIN_UNLIFE_CODE_CONTENT, null)
                     .toJSONString();
         else {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_LIFE_CODE,
-                            ResponseCodeUtil.LEMONBILY_LOGIN_LIFE_CODE_CONTENT)
+                            ResponseCodeUtil.LEMONBILY_LOGIN_LIFE_CODE_CONTENT, null)
                     .toJSONString();
         }
     }
