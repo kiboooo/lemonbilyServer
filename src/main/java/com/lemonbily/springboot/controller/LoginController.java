@@ -2,16 +2,20 @@ package com.lemonbily.springboot.controller;
 
 
 import com.lemonbily.springboot.bean.CommonBean;
+import com.lemonbily.springboot.bean.Token;
 import com.lemonbily.springboot.entity.Login;
 import com.lemonbily.springboot.mapper.LoginMapper;
 import com.lemonbily.springboot.util.JsonUtil;
 import com.lemonbily.springboot.util.ResponseCodeUtil;
+import com.lemonbily.springboot.util.TokenUtil;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.beans.Beans;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/LoginController")
@@ -19,6 +23,7 @@ public class LoginController extends BaseController<Login> {
 
     @Autowired(required = false)
     LoginMapper loginMapper;
+    org.slf4j.Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     @RequestMapping(value = "/registered",
@@ -46,13 +51,14 @@ public class LoginController extends BaseController<Login> {
     public String selectAll() {
         List<Login> list= loginMapper.selectAll();
         if ((list) != null) {
+            TokenUtil.generateTokenAddMap(list.get(0));
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE, list)
                     .toJSONString();
         } else {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_FAIL_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL)
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT)
                     .toJSONString();
         }
     }
@@ -60,7 +66,20 @@ public class LoginController extends BaseController<Login> {
     @Override
     @RequestMapping(value = "/getLogin/{id}", produces = "application/json;charset=UTF-8")
     public String selectByID(@PathVariable("id") int id) {
-        return null;
+        logger.info("/getLogin/{id}");
+        Login login = loginMapper.selectByID(id);
+        if (null == login) {
+            return JsonUtil
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT )
+                    .toJSONString();
+        }else{
+            Token token = TokenUtil.generateLoginUserToken(login);
+            return JsonUtil
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,token.getToken(), login)
+                    .toJSONString();
+        }
+
     }
 
     @RequestMapping(value = "/checkLiveTime/{id}",produces = "application/json;charset=UTF-8")

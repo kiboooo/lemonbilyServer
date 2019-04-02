@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Lemonbily")
 public abstract class BaseController<T> {
     //插入数据
     public abstract String insert(T record);

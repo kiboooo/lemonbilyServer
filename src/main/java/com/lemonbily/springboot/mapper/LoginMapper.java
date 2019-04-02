@@ -22,13 +22,7 @@ public interface LoginMapper {
      */
     List<Login> selectAll();
 
-    /**
-     * 登陆账号校验
-     * @param loginID 用户名id
-     * @param passWord 密码
-     * @return true 校验通过，false 检验失败
-     */
-    boolean loginCheck(int loginID , String passWord);
+    Login selectByID(int id);
 
     /**
      *  用户登陆生命周期查询

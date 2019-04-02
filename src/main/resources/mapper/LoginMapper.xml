@@ -34,4 +34,11 @@
     from login
   </select>
 
+
+  <select id="selectByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+
+    select Id, `Name`, LPassWord, LPhone, LLiveTime
+    from login where Id = #{id,jdbcType=INTEGER}
+  </select>
+
 </mapper>

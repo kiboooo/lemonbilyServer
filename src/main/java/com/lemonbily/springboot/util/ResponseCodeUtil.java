@@ -17,7 +17,7 @@ public class ResponseCodeUtil {
     //查找
     public static final int LEMONBILY_SELECT_ERRO_CODE = 1;
     public static final String LEMONBILY_SELECT_ERRO_CODE_CONTENT = "数据库查询错误";
-    public static final String LEMONBILY_SELECT_TABLE_NULL = "查找的表单为空";
+    public static final String LEMONBILY_SELECT_TABLE_NULL_CONTENT = "查找的表单为空";
 
     //插入
     public static final int LEMONBILY_INSERT_ERRO_CODE = 2;

@@ -25,10 +25,15 @@ public class TokenUtil {
         switch (object.getClass().getName()) {
             case "com.lemonbily.springboot.entity.Login": {
                 Login login = (Login) object;
-                tokenMap.put(
-                        login.getId().toString(),
-                        generateLoginUserToken(login)
-                );
+                if (tokenMap.containsKey(login.getId().toString())){
+                    tokenMap.replace(login.getId().toString(),
+                            generateLoginUserToken(login));
+                }else {
+                    tokenMap.put(
+                            login.getId().toString(),
+                            generateLoginUserToken(login)
+                    );
+                }
                 break;
             }
             default:
@@ -54,7 +59,7 @@ public class TokenUtil {
         tokenMap.remove(idKey);
     }
 
-    private static Token generateLoginUserToken(Login login) {
+    public static Token generateLoginUserToken(Login login) {
         String token = login.getId()
                 + login.getLpassword()
                 + login.getName()

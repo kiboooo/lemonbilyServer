@@ -29,4 +29,12 @@ public class Token {
     public void setLiveTimeLimit(Date liveTimeLimit) {
         this.liveTimeLimit = liveTimeLimit;
     }
+
+    @Override
+    public String toString() {
+        return "Token{" +
+                "token='" + token + '\'' +
+                ", liveTimeLimit=" + liveTimeLimit +
+                '}';
+    }
 }
