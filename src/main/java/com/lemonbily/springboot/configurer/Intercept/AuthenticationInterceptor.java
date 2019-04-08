@@ -29,12 +29,12 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         boolean result = false;
         String token = request.getHeader("token");
-        String userId = request.getHeader("id");
+        String phone = request.getHeader("phone");
 
         logger.info("------------AuthenticationInterceptor-------------");
         logger.info("token ：" + token);
-        logger.info("userId ：" + userId);
-        if (null == token || null == userId) {
+        logger.info("phone ：" + phone);
+        if (null == token || null == phone) {
             JSONObject object = JsonUtil.generateJsonResponse(
                     ResponseCodeUtil.LEMONBILY_LOGIN_UNLIFE_CODE,
                     ResponseCodeUtil.LEMONBILY_LOGIN_UNLIFE_CODE_CONTENT,null);
@@ -42,7 +42,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             response.getWriter().println(object);
         }else{
 
-            if (TokenUtil.isTokenEffective(userId, token)) {
+            if (TokenUtil.isTokenEffective(phone, token)) {
                 result = true;
             }else {
                 JSONObject object = JsonUtil.generateJsonResponse(
@@ -52,7 +52,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 response.getWriter().println(object);
 
                 //token不匹配说明过期了
-                TokenUtil.removeToken(userId);
+                TokenUtil.removeToken(phone);
             }
         }
         return result;

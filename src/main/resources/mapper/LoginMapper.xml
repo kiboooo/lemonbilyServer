@@ -30,6 +30,12 @@
     select Id, `Name`, LPassWord, LPhone, LLiveTime
     from login where Id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByPhone" resultMap="BaseResultMap" parameterType="java.lang.String">
+
+    select Id, `Name`, LPassWord, LPhone, LLiveTime
+    from login where LPhone = #{lphone,jdbcType=CHAR}
+  </select>
   
   <delete id="deleteByID" parameterType="java.lang.Integer">
     DELETE FROM login

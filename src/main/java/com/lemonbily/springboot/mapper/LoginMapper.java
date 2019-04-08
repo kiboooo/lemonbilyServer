@@ -2,6 +2,7 @@ package com.lemonbily.springboot.mapper;
 
 import com.lemonbily.springboot.entity.Login;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +24,8 @@ public interface LoginMapper {
     List<Login> selectAll();
 
     Login selectByID(int id);
+
+    Login selectByPhone(String lphone);
 
     int update(Login login);
 

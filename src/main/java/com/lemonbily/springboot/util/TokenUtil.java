@@ -2,11 +2,9 @@ package com.lemonbily.springboot.util;
 
 import com.lemonbily.springboot.bean.CommonBean;
 import com.lemonbily.springboot.bean.Token;
-import com.lemonbily.springboot.controller.LoginController;
 import com.lemonbily.springboot.entity.Login;
 import org.apache.commons.codec.digest.DigestUtils;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,12 +25,12 @@ public class TokenUtil {
             case "com.lemonbily.springboot.entity.Login": {
                 Login login = (Login) object;
                 mToken = generateLoginUserToken(login);
-                if (tokenMap.containsKey(login.getId().toString())){
-                    tokenMap.replace(login.getId().toString(),
+                if (tokenMap.containsKey(login.getLphone())){
+                    tokenMap.replace(login.getLphone(),
                             mToken);
                 }else {
                     tokenMap.put(
-                            login.getId().toString(),
+                            login.getLphone(),
                             mToken
                     );
                 }
@@ -63,8 +61,8 @@ public class TokenUtil {
     }
     //TODO: 测试环境下获取测试用Token，上线环境下必须声明为 private
     public static Token generateLoginUserToken(Login login) {
-        String token = login.getId()
-                + login.getName()
+        String token = login.getName()
+                +login.getLpassword()
                 + login.getLphone()
                 + SALT;
 

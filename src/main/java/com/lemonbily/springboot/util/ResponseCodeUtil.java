@@ -52,7 +52,7 @@ public class ResponseCodeUtil {
     public static final String LEMONBILY_LOGIN_REGISTER_SUCCESS_CONTENT = "账户注册成功";
     public static final int LEMONBILY_LOGIN_REGISTER_FAIL_CODE = 1006;
     public static final String LEMONBILY_LOGIN_REGISTER_FAIL_CONTENT_LOGIN_NULL = "账户注册失败，注册对象为空";
-    public static final String LEMONBILY_LOGIN_REGISTER_FAIL_CONTENT_LOGIN_ID_NULL = "账户注册失败，注册账号为空";
+    public static final String LEMONBILY_LOGIN_REGISTER_FAIL_CONTENT_LOGIN_PHONE_PRESENCE = "账户注册失败，注册电话已存在";
     public static final String LEMONBILY_LOGIN_REGISTER_FAIL_CONTENT_LOGIN_NAME_NULL = "账户注册失败，注册用户名为空";
     public static final String LEMONBILY_LOGIN_REGISTER_FAIL_CONTENT_LOGIN_PASS_NULL = "账户注册失败，注册用户密码为空";
     public static final String LEMONBILY_LOGIN_REGISTER_FAIL_CONTENT_LOGIN_PHONE_NULL = "账户注册失败，注册电话为空";
