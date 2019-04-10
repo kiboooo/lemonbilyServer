@@ -81,6 +81,8 @@ public class ResponseCodeUtil {
     public static final int LEMONBILY_ACCOUNT_AID_FAIL_CODE = 1054;
     public static final String LEMONBILY_ACCOUNT_AID_FAIL_CODE_CONTENT = "对象的ID是非法ID";
     public static final String LEMONBILY_ACCOUNT_UPDATE_SUCCESS_CONTENT = "更新ACCOUNT对象成功";
+    public static final int LEMONBILY_ACCOUNT_UPLOAD_FILE_FAIL_CODE = 1055;
+    public static final String LEMONBILY_ACCOUNT_UPLOAD_FILE_FAIL_CODE_CONTENT = "上传文件失败";
 
 
 

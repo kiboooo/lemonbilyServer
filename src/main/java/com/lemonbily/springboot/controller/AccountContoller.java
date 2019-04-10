@@ -1,7 +1,9 @@
 package com.lemonbily.springboot.controller;
 
+import com.lemonbily.springboot.bean.CommonBean;
 import com.lemonbily.springboot.entity.Account;
 import com.lemonbily.springboot.mapper.AccountMapper;
+import com.lemonbily.springboot.util.FileUtil;
 import com.lemonbily.springboot.util.JsonUtil;
 import com.lemonbily.springboot.util.ResponseCodeUtil;
 import org.slf4j.Logger;
@@ -12,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/AccountContoller")
 public class AccountContoller extends BaseController<Account> {
@@ -21,6 +22,7 @@ public class AccountContoller extends BaseController<Account> {
     AccountMapper accountMapper;
 
     Logger logger = LoggerFactory.getLogger(this.getClass()); //日志对象
+
     @Override
     @RequestMapping(value = "/insert",
             method = RequestMethod.POST,
@@ -34,8 +36,9 @@ public class AccountContoller extends BaseController<Account> {
                     ResponseCodeUtil.LEMONBILY_ACCOUNT_INSERT_OBJECT_NULL_CONTENT, null)
                     .toJSONString();
         }
-        if (null == record.getAId() || record.getAId() < 1000) {
-            logger.error("插入对象的ID是非法ID");
+        logger.info(record.toString());
+        if (null == record.getAid() || record.getAid() < 1000) {
+            logger.error("插入对象的ID是非法ID" + record.getAid());
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_ACCOUNT_AID_FAIL_CODE,
                     ResponseCodeUtil.LEMONBILY_ACCOUNT_AID_FAIL_CODE_CONTENT, null)
                     .toJSONString();
@@ -81,13 +84,13 @@ public class AccountContoller extends BaseController<Account> {
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String update(@RequestBody Account record ) {
+    public String update(@RequestBody Account record) {
         if (null == record) {
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_ACCOUNT_INSERT_OBJECT_NULL_CODE,
                     ResponseCodeUtil.LEMONBILY_ACCOUNT_INSERT_OBJECT_NULL_CONTENT, null)
                     .toJSONString();
         }
-        if (record.getAId() < 1000) {
+        if (null == record.getAid() || record.getAid() < 1000) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_FAIL_CODE,
                             ResponseCodeUtil.LEMONBILY_ACCOUNT_AID_FAIL_CODE_CONTENT, null)
@@ -99,36 +102,45 @@ public class AccountContoller extends BaseController<Account> {
                     .toJSONString();
         }
         return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                ResponseCodeUtil.LEMONBILY_ACCOUNT_INSERT_SUCCESS_CONTENT, record)
+                ResponseCodeUtil.LEMONBILY_ACCOUNT_UPDATE_SUCCESS_CONTENT, record)
                 .toJSONString();
     }
 
+    /**
+     * 上传头像
+     *
+     * @param aId   上传者id
+     * @param image 上传的图片文件对象
+     * @return 返回图片在服务器上的地址。
+     */
 
     @RequestMapping(value = "/updateAvatar",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String updateAvatar( @RequestParam("name") Account record, @RequestParam("avatarImage") MultipartFile image) {
+    public String updateAvatar(@RequestParam("AId") Integer aId,
+                               @RequestParam("avatarImage") MultipartFile image) {
 
-        if (null == record) {
+        if (null == image || null == aId || image.isEmpty()) {
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_ACCOUNT_INSERT_OBJECT_NULL_CODE,
                     ResponseCodeUtil.LEMONBILY_ACCOUNT_INSERT_OBJECT_NULL_CONTENT, null)
                     .toJSONString();
         }
-        if (record.getAId() < 1000) {
+        if (aId < 1000) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_FAIL_CODE,
                             ResponseCodeUtil.LEMONBILY_ACCOUNT_AID_FAIL_CODE_CONTENT, null)
                     .toJSONString();
         }
-        if (accountMapper.update(record) < 1) {
-            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_UPDATE_ERRO_CODE,
-                    ResponseCodeUtil.LEMONBILY_UPDATE_ERRO_CODE_CONTENT, null)
+        String AvatarUrl = FileUtil.upload(image, aId.toString(),
+                CommonBean.SERVER_AVATAR_RELATIVE_PATH, FileUtil.USER_AVATAR_PREFIX, image.getOriginalFilename());
+        if (AvatarUrl == null) {
+            return JsonUtil
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_ACCOUNT_UPLOAD_FILE_FAIL_CODE,
+                            ResponseCodeUtil.LEMONBILY_ACCOUNT_UPLOAD_FILE_FAIL_CODE_CONTENT, image)
                     .toJSONString();
-        }
-        return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                ResponseCodeUtil.LEMONBILY_ACCOUNT_INSERT_SUCCESS_CONTENT, record)
-                .toJSONString();
+        } else
+            return AvatarUrl;
     }
 
     @Override
@@ -144,13 +156,13 @@ public class AccountContoller extends BaseController<Account> {
                             ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
                     .toJSONString();
         }
-       return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, list)
+        return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
+                ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, list)
                 .toJSONString();
     }
 
     @Override
-    @RequestMapping(value = "/insert/{AId}",
+    @RequestMapping(value = "/selectByID/{AId}",
             produces = "application/json;charset=UTF-8"
     )
     public String selectByID(@PathVariable("AId") int AId) {
