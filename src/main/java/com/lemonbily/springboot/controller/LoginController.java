@@ -48,12 +48,6 @@ public class LoginController extends BaseController<Login> {
                     ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_FAIL_CONTENT_LOGIN_NULL, null)
                     .toJSONString();
         }
-        if (null == record.getName() || record.getName().equals("")) {
-            logger.info("-------- 注册接口用户名为空 -------");
-            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_FAIL_CODE,
-                    ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_FAIL_CONTENT_LOGIN_NAME_NULL, null)
-                    .toJSONString();
-        }
         if (null == record.getLpassword() || record.getLpassword().equals("")) {
             logger.info("-------- 注册接口密码为空 -------");
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_FAIL_CODE,
@@ -150,7 +144,7 @@ public class LoginController extends BaseController<Login> {
      * 删除Login表中的用户的信息。
      *
      * @param id
-     * @return
+     *  @return
      */
     @Override
     @RequestMapping(value = "/permanentLogout/{id}", produces = "application/json;charset=UTF-8")
@@ -173,7 +167,7 @@ public class LoginController extends BaseController<Login> {
      */
     @Override
     @RequestMapping(value = "/changePassWord", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public String updete(@RequestBody Login record) {
+    public String update(@RequestBody Login record) {
         if (null == record || loginMapper.update(record) < 1) {
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_CHANGE_PASSWORD_FAIL_CODE,
                     ResponseCodeUtil.LEMONBILY_LOGIN_CHANGE_PASSWORD_FAIL_CODE_CONTENT, null)
@@ -195,8 +189,12 @@ public class LoginController extends BaseController<Login> {
     public String selectAll() {
         List<Login> list = loginMapper.selectAll();
         if ((list) != null) {
+
+            //TODO :测试用代码，认为注册并获取token
             String token = TokenUtil.generateTokenAddMap(list.get(2));
             logger.info(token);
+            //测试结束
+
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
                             ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, list)

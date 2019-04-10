@@ -4,7 +4,6 @@
   <resultMap id="BaseResultMap" type="com.lemonbily.springboot.entity.Login">
 
     <result column="Id" jdbcType="INTEGER" property="id" />
-    <result column="Name" jdbcType="VARCHAR" property="name" />
     <result column="LPassWord" jdbcType="VARCHAR" property="lpassword" />
     <result column="LPhone" jdbcType="CHAR" property="lphone" />
     <result column="LLiveTime" jdbcType="TIMESTAMP" property="llivetime" />
@@ -14,26 +13,26 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into login (`Name`, LPassWord, LPhone, 
+    insert into login ( LPassWord, LPhone,
       LLiveTime)
-    values (#{name,jdbcType=VARCHAR}, #{lpassword,jdbcType=VARCHAR}, #{lphone,jdbcType=CHAR}, 
+    values (#{lpassword,jdbcType=VARCHAR}, #{lphone,jdbcType=CHAR},
       #{llivetime,jdbcType=TIMESTAMP})
   </insert>
   <select id="selectAll" resultMap="BaseResultMap">
 
-    select Id, `Name`, LPassWord, LPhone, LLiveTime
+    select Id, LPassWord, LPhone, LLiveTime
     from login
   </select>
 
   <select id="selectByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 
-    select Id, `Name`, LPassWord, LPhone, LLiveTime
+    select Id, LPassWord, LPhone, LLiveTime
     from login where Id = #{id,jdbcType=INTEGER}
   </select>
 
   <select id="selectByPhone" resultMap="BaseResultMap" parameterType="java.lang.String">
 
-    select Id, `Name`, LPassWord, LPhone, LLiveTime
+    select Id, LPassWord, LPhone, LLiveTime
     from login where LPhone = #{lphone,jdbcType=CHAR}
   </select>
   
@@ -45,9 +44,6 @@
   <update id="update" parameterType="com.lemonbily.springboot.entity.Login">
     UPDATE login
     <set>
-      <if test="name != null">
-        Name = #{name,jdbcType=VARCHAR},
-      </if>
       <if test="lpassword != null">
         LPassWord = #{lpassword,jdbcType=VARCHAR},
       </if>

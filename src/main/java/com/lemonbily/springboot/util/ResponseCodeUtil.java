@@ -17,7 +17,7 @@ public class ResponseCodeUtil {
     //查找
     public static final int LEMONBILY_SELECT_ERRO_CODE = 1;
     public static final String LEMONBILY_SELECT_ERRO_CODE_CONTENT = "数据库查询错误";
-    public static final String LEMONBILY_SELECT_TABLE_NULL_CONTENT = "查找的表单为空";
+    public static final String  LEMONBILY_SELECT_TABLE_NULL_CONTENT = "查找的表单为空";
 
     //插入
     public static final int LEMONBILY_INSERT_ERRO_CODE = 2;
@@ -73,6 +73,16 @@ public class ResponseCodeUtil {
     public static final String LEMONBILY_LOGIN_CHANGE_PASSWORD_SUCCESS_CODE_CONTENT = "修改密码成功";
     public static final int LEMONBILY_LOGIN_CHANGE_PASSWORD_FAIL_CODE = 1052;
     public static final String LEMONBILY_LOGIN_CHANGE_PASSWORD_FAIL_CODE_CONTENT = "修改密码失败";
+
+    //完善个人信息
+    public static final String LEMONBILY_ACCOUNT_INSERT_SUCCESS_CONTENT = "插入ACCOUNT对象成功";
+    public static final int LEMONBILY_ACCOUNT_INSERT_OBJECT_NULL_CODE = 1053;
+    public static final String LEMONBILY_ACCOUNT_INSERT_OBJECT_NULL_CONTENT = "接收到的对象为空";
+    public static final int LEMONBILY_ACCOUNT_AID_FAIL_CODE = 1054;
+    public static final String LEMONBILY_ACCOUNT_AID_FAIL_CODE_CONTENT = "对象的ID是非法ID";
+    public static final String LEMONBILY_ACCOUNT_UPDATE_SUCCESS_CONTENT = "更新ACCOUNT对象成功";
+
+
 
 
 

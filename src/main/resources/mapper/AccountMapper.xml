@@ -24,6 +24,7 @@
     values (#{AName,jdbcType=VARCHAR}, #{ASex,jdbcType=VARCHAR}, #{AAvatar,jdbcType=VARCHAR}
       )
   </insert>
+
   <select id="selectAll" resultMap="BaseResultMap">
     <!--
       WARNING - @mbggenerated
@@ -32,4 +33,34 @@
     select AId, AName, ASex, AAvatar
     from account
   </select>
+
+  <select id="selectByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+
+    select AId, AName, ASex, AAvatar
+    from account where AId = #{AId,jdbcType=INTEGER}
+  </select>
+
+  <update id="update" parameterType="com.lemonbily.springboot.entity.Account">
+    UPDATE account
+    <set>
+      <if test="AName != null">
+        AName = #{AName,jdbcType=VARCHAR},
+      </if>
+      <if test="ASex != null">
+        ASex = #{ASex,jdbcType=VARCHAR},
+      </if>
+      <if test="AAvatar != null">
+        AAvatar = #{AAvatar,jdbcType=VARCHAR},
+      </if>
+    </set>
+    WHERE AId = #{AId,jdbcType=INTEGER}
+  </update>
+
+  <delete id="deleteByID" parameterType="java.lang.Integer">
+    DELETE FROM account
+    WHERE  AId = #{AId,jdbcType=INTEGER}
+  </delete>
+
+
+
 </mapper>

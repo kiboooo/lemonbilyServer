@@ -61,8 +61,7 @@ public class TokenUtil {
     }
     //TODO: 测试环境下获取测试用Token，上线环境下必须声明为 private
     public static Token generateLoginUserToken(Login login) {
-        String token = login.getName()
-                +login.getLpassword()
+        String token = login.getLpassword()
                 + login.getLphone()
                 + SALT;
 

@@ -19,4 +19,10 @@ public interface AccountMapper {
      * @mbggenerated
      */
     List<Account> selectAll();
+
+    Account selectByID(int AId);
+
+    int update(Account account);
+
+    int deleteByID(int AId);
 }

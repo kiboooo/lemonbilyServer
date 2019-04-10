@@ -14,7 +14,7 @@ public abstract class BaseController<T> {
     public abstract String deleteByID(int id);
 
     //更改数据
-    public abstract String updete(T record);
+    public abstract String update(T record);
 
     //批量查询
     public abstract String selectAll();
