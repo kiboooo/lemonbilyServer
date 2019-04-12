@@ -1,6 +1,8 @@
 package com.lemonbily.springboot.mapper;
 
 import com.lemonbily.springboot.entity.Series;
+import com.lemonbily.springboot.entity.Video;
+
 import java.util.List;
 
 public interface SeriesMapper {
@@ -19,4 +21,10 @@ public interface SeriesMapper {
      * @mbggenerated
      */
     List<Series> selectAll();
+
+    Series selectBySID(int sid);
+
+    int update(Series series);
+
+    int deleteBySID(int sid);
 }
