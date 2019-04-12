@@ -1,16 +1,19 @@
 package com.lemonbily.springboot.util;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public class FileUtil {
 
     public static final String USER_AVATAR_PREFIX = "avatar";
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+    private static final org.slf4j.Logger logger =  LoggerFactory.getLogger("util.FileUtil");
 
     /**
      * 获取上传文件的文件名后缀，以便于确定是那种类型的文件
@@ -31,8 +34,7 @@ public class FileUtil {
      */
     public static String formatFileName(String id, String prefix, String fileName) {
 
-        return UUID.randomUUID().toString() +
-                prefix + "_" +
+        return prefix + "_" +
                 id + "_" +
                 sdf.format(System.currentTimeMillis()) +
                 getSuffix(fileName);
@@ -64,14 +66,18 @@ public class FileUtil {
                                 String path, String prefix, String fileName) {
         String realPath = path;
         if (id == null) {
-            realPath += "/" + fileName;
+            realPath += File.separator + fileName;
         } else {
             if (prefix == null) {
                 prefix = "lemon";
             }
-            realPath = path + "/" + id + "/" + formatFileName(id, prefix, fileName);
+            logger.info("path = " + path);
+            logger.info("prefix = " + prefix);
+            logger.info("fileName = " + fileName);
+            logger.info("realPath = " + realPath);
+            realPath = path + File.separator + id + File.separator + formatFileName(id, prefix, fileName);
         }
-
+        logger.info(realPath);
         File curFile = new File(realPath);
 
         if (!curFile.getParentFile().exists()) {

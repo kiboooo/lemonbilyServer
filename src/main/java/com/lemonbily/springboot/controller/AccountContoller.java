@@ -118,29 +118,41 @@ public class AccountContoller extends BaseController<Account> {
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String updateAvatar(@RequestParam("AId") Integer aId,
+    public String updateAvatar(@RequestParam("aid") Integer aId,
                                @RequestParam("avatarImage") MultipartFile image) {
 
+        logger.info("----文件上传开始----");
         if (null == image || null == aId || image.isEmpty()) {
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_ACCOUNT_INSERT_OBJECT_NULL_CODE,
                     ResponseCodeUtil.LEMONBILY_ACCOUNT_INSERT_OBJECT_NULL_CONTENT, null)
                     .toJSONString();
         }
+        logger.info("aid =" + aId + "  image" + image.getOriginalFilename());
         if (aId < 1000) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_FAIL_CODE,
                             ResponseCodeUtil.LEMONBILY_ACCOUNT_AID_FAIL_CODE_CONTENT, null)
                     .toJSONString();
         }
+//        服务器环境
+//        String AvatarUrl = FileUtil.upload(image, aId.toString(),
+//                CommonBean.SERVER_AVATAR_RELATIVE_PATH, FileUtil.USER_AVATAR_PREFIX, image.getOriginalFilename());
+
+        //debug环境
         String AvatarUrl = FileUtil.upload(image, aId.toString(),
-                CommonBean.SERVER_AVATAR_RELATIVE_PATH, FileUtil.USER_AVATAR_PREFIX, image.getOriginalFilename());
+                CommonBean.DEBUG_SERVER_AVATAR_RELATIVE_PATH, FileUtil.USER_AVATAR_PREFIX, image.getOriginalFilename());
         if (AvatarUrl == null) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_ACCOUNT_UPLOAD_FILE_FAIL_CODE,
                             ResponseCodeUtil.LEMONBILY_ACCOUNT_UPLOAD_FILE_FAIL_CODE_CONTENT, image)
                     .toJSONString();
-        } else
-            return AvatarUrl;
+        } else{
+            logger.info(AvatarUrl);
+            return JsonUtil
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
+                            ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, AvatarUrl)
+                    .toJSONString();
+        }
     }
 
     @Override
