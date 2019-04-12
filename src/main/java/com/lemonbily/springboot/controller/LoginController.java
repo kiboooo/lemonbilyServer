@@ -22,8 +22,6 @@ public class LoginController extends BaseController<Login> {
 
     @Autowired(required = false)
     LoginMapper loginMapper;
-    org.slf4j.Logger logger = LoggerFactory.getLogger(this.getClass()); //日志对象
-
 
     /**
      * 注册接口
@@ -44,8 +42,8 @@ public class LoginController extends BaseController<Login> {
          *  校验传入对象开始
          */
         if (null == record) {
-            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_FAIL_CODE,
-                    ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_FAIL_CONTENT_LOGIN_NULL, null)
+            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_INSERT_ERRO_CODE,
+                    ResponseCodeUtil.LEMONBILY_OBJECT_NULL_CONTENT, null)
                     .toJSONString();
         }
         if (null == record.getLpassword() || record.getLpassword().equals("")) {
@@ -169,8 +167,8 @@ public class LoginController extends BaseController<Login> {
     @RequestMapping(value = "/changePassWord", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public String update(@RequestBody Login record) {
         if (null == record || loginMapper.update(record) < 1) {
-            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_CHANGE_PASSWORD_FAIL_CODE,
-                    ResponseCodeUtil.LEMONBILY_LOGIN_CHANGE_PASSWORD_FAIL_CODE_CONTENT, null)
+            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_UPDATE_ERRO_CODE,
+                    ResponseCodeUtil.LEMONBILY_OBJECT_NULL_CONTENT, null)
                     .toJSONString();
         }
         return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_CHANGE_PASSWORD_SUCCESS_CODE,

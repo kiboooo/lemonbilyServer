@@ -18,10 +18,12 @@ public class ResponseCodeUtil {
     public static final int LEMONBILY_SELECT_ERRO_CODE = 1;
     public static final String LEMONBILY_SELECT_ERRO_CODE_CONTENT = "数据库查询错误";
     public static final String  LEMONBILY_SELECT_TABLE_NULL_CONTENT = "查找的表单为空";
+    public static final String LEMONBILY_SELECT_ID_ILLEGAL_CONTENT = "查找的ID是非法ID";
 
     //插入
     public static final int LEMONBILY_INSERT_ERRO_CODE = 2;
     public static final String LEMONBILY_INSERT_ERRO_CODE_CONTENT = "数据库插入错误";
+    public static final String LEMONBILY_OBJECT_NULL_CONTENT = "接收到的对象为空";
 
     //更新
     public static final int LEMONBILY_UPDATE_ERRO_CODE = 3;
@@ -30,6 +32,7 @@ public class ResponseCodeUtil {
     //删除
     public static final int LEMONBILY_DELETE_ERRO_CODE = 4;
     public static final String LEMONBILY_DELETE_ERRO_CODE_CONTENT = "数据库删除错误";
+    public static final String LEMONBILY_DELETE_ID_ILLEGAL_CONTENT = "删除的ID是非法ID";
 
     /**
      * 登陆操作相关状态码
@@ -84,8 +87,14 @@ public class ResponseCodeUtil {
     public static final int LEMONBILY_ACCOUNT_UPLOAD_FILE_FAIL_CODE = 1055;
     public static final String LEMONBILY_ACCOUNT_UPLOAD_FILE_FAIL_CODE_CONTENT = "上传文件失败";
 
+    /**
+     * 视频列表操作相关状态码
+     * 状态码范围： 1101-1300
+     */
 
-
+    public static final int LEMONBILY_VIDEO_INSERT_SID_ILLEGAL_CODE = 1101;
+    public static final String LEMONBILY_VIDEO_INSERT_SID_ILLEGAL_CODE_CONTENT = "插入的SID是非法ID";
+    public static final String LEMONBILY_VIDEO_UPDATE_VID_ILLEGAL_CODE_CONTENT = "更新的VID是非法ID";
 
 
 }

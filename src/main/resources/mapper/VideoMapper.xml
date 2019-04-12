@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lemonbily.springboot.mapper.VideoMapper">
+
   <resultMap id="BaseResultMap" type="com.lemonbily.springboot.entity.Video">
     <!--
       WARNING - @mbggenerated
@@ -15,6 +16,7 @@
     <result column="VPlayNum" jdbcType="INTEGER" property="vplaynum" />
     <result column="Vtimer" jdbcType="VARCHAR" property="vtimer" />
   </resultMap>
+
   <insert id="insert" parameterType="com.lemonbily.springboot.entity.Video">
     <!--
       WARNING - @mbggenerated
@@ -30,6 +32,41 @@
       #{vpath,jdbcType=VARCHAR}, #{vpicture,jdbcType=VARCHAR}, #{vplaynum,jdbcType=INTEGER}, 
       #{vtimer,jdbcType=VARCHAR})
   </insert>
+
+  <delete id="deleteByVID" parameterType="java.lang.Integer">
+    DELETE FROM video
+    WHERE  VID = #{vid,jdbcType=INTEGER}
+  </delete>
+
+  <update id="update" parameterType="com.lemonbily.springboot.entity.Video">
+    UPDATE video
+    <set>
+      <if test="sid != null">
+        SID = #{sid,jdbcType=INTEGER},
+      </if>
+      <if test="vname != null">
+        VName = #{vname,jdbcType=VARCHAR},
+      </if>
+      <if test="vdescribe != null">
+        VDescribe = #{vdescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="vpath != null">
+        VPath = #{vpath,jdbcType=VARCHAR},
+      </if>
+      <if test="vpicture != null">
+        VPicture = #{vpicture,jdbcType=VARCHAR},
+      </if>
+      <if test="vplaynum != null">
+        VPlayNum = #{vplaynum,jdbcType=INTEGER},
+      </if>
+      <if test="vtimer != null">
+        Vtimer = #{vtimer,jdbcType=VARCHAR},
+      </if>
+    </set>
+    WHERE VID = #{vid,jdbcType=INTEGER}
+  </update>
+
+
   <select id="selectAll" resultMap="BaseResultMap">
     <!--
       WARNING - @mbggenerated
@@ -38,4 +75,16 @@
     select VID, SID, VName, VDescribe, VPath, VPicture, VPlayNum, Vtimer
     from video
   </select>
+
+  <select id="selectByVID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select *
+    from video where VID = #{vid,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectBySID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select *
+    from video where SID = #{sid,jdbcType=INTEGER}
+  </select>
+
+
 </mapper>
