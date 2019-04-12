@@ -101,9 +101,18 @@ public class ResponseCodeUtil {
      * 剧集列表操作相关状态码
      * 状态码范围： 1301-1400
      */
-
     public static final int LEMONBILY_SERIES_ID_ILLEGAL_CODE = 1301;
     public static final String LEMONBILY_SERIES_TEPY_ILLEGAL_CONTENT = "接收的type是非法类型";
     public static final String LEMONBILY_SERIES_UPDATE_SID_ILLEGAL_CONTENT = "更新的SID是非法ID";
+
+
+    /**
+     * 评论列表操作相关状态码
+     * 状态码范围： 1401-1500
+     */
+    public static final int LEMONBILY_COMMENT_ID_ILLEGAL_CODE = 1401;
+    public static final String LEMONBILY_COMMENT_UID_ILLEGAL_CONTENT = "接收的UID是非法ID";
+    public static final String LEMONBILY_COMMENT_TYPE_ILLEGAL_CONTENT = "接收的comType是非法comType";
+    public static final String LEMONBILY_COMMENT_TOID_ILLEGAL_CONTENT = "接收的ToID是非法ToID";
 
 }

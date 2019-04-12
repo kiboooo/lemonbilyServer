@@ -1,6 +1,8 @@
 package com.lemonbily.springboot.mapper;
 
 import com.lemonbily.springboot.entity.Comment;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface CommentMapper {
@@ -19,4 +21,16 @@ public interface CommentMapper {
      * @mbggenerated
      */
     List<Comment> selectAll();
+
+    Comment selectByComID(int comid);
+
+    List<Comment> selectByUID(@Param("uid") int uid);
+
+    List<Comment> selectByUIDAndType(@Param("uid")  int uid, @Param("comtype") int comtype);
+
+    List<Comment> selectByUIDAndTypeAndToID(@Param("uid") int uid,
+                                            @Param("comtype")int comtype,
+                                            @Param("toid")int toid);
+
+    int deleteByComID(int comid);
 }
