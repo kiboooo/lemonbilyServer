@@ -1,19 +1,20 @@
 package com.lemonbily.springboot.util;
 
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.UUID;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileUtil {
 
     public static final String USER_AVATAR_PREFIX = "avatar";
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-    private static final org.slf4j.Logger logger =  LoggerFactory.getLogger("util.FileUtil");
+    private static SimpleDateFormat sdfMillis = new SimpleDateFormat("yyyyMMddHHmmssSS");
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger("util.FileUtil");
 
     /**
      * 获取上传文件的文件名后缀，以便于确定是那种类型的文件
@@ -36,46 +37,48 @@ public class FileUtil {
 
         return prefix + "_" +
                 id + "_" +
-                sdf.format(System.currentTimeMillis()) +
+                sdfMillis.format(System.currentTimeMillis()) +
                 getSuffix(fileName);
     }
 
     /**
      * 上传文件
      *
-     * @param file     通过表单传递过来的文件对象
-     * @param path     文件存放在服务器上的地址
-     * @param fileName 上传文件的原始文件名
+     * @param file 通过表单传递过来的文件对象
+     * @param path 文件存放在服务器上的地址
      * @return 返回上传文件后地址，供读取
      */
-    public static String upload(MultipartFile file, String path, String fileName) {
-        return upload(file, null, path, null, fileName);
+    public static String upload(MultipartFile file, String path) {
+        return upload(file, null, path, null);
     }
 
     /**
-     * 上传文件
+     * 上传文件，单文件上传
      *
-     * @param file     通过表单传递过来的文件对象
-     * @param path     文件存放在服务器上的地址
-     * @param prefix   上传文件的前缀，用于区别服务器上的文件
-     * @param fileName 上传文件的原始文件名
+     * @param file   通过表单传递过来的文件对象
+     * @param id     上传者的id
+     * @param path   文件存放在服务器上的地址
+     * @param prefix 上传文件的前缀，用于区别服务器上的文件
      * @return 服务器存储的地址
      */
 
     public static String upload(MultipartFile file, String id,
-                                String path, String prefix, String fileName) {
+                                String path, String prefix) {
         String realPath = path;
+        if (null == file) {
+            return null;
+        }
         if (id == null) {
-            realPath += File.separator + fileName;
+            realPath += File.separator + file.getOriginalFilename();
         } else {
             if (prefix == null) {
                 prefix = "lemon";
             }
             logger.info("path = " + path);
             logger.info("prefix = " + prefix);
-            logger.info("fileName = " + fileName);
+            logger.info("fileName = " + file.getOriginalFilename());
             logger.info("realPath = " + realPath);
-            realPath = path + File.separator + id + File.separator + formatFileName(id, prefix, fileName);
+            realPath = path + File.separator + id + File.separator + formatFileName(id, prefix, file.getOriginalFilename());
         }
         logger.info(realPath);
         File curFile = new File(realPath);
@@ -94,4 +97,32 @@ public class FileUtil {
         }
         return curFile.getPath();
     }
+
+    /**
+     * 上传文件，多文件上传
+     *
+     * @param file 多个文件宿主
+     * @param id     上传者的id
+     * @param path   文件存放在服务器上的地址
+     * @param prefix 上传文件的前缀，用于区别服务器上的文件
+     * @return 返回众多上传结果
+     */
+    public static List<JSONObject> upload(MultipartFile[] file, String id, String path, String prefix) {
+        List<JSONObject> filePaths = new ArrayList<>();
+        for (MultipartFile multipartFile : file) {
+            String curPath = upload(multipartFile, id, path, prefix);
+            if (null == curPath) {
+                filePaths.add(JsonUtil
+                        .generateJsonResponse(ResponseCodeUtil.LEMONBILY_ACCOUNT_UPLOAD_FILE_FAIL_CODE,
+                                ResponseCodeUtil.LEMONBILY_ACCOUNT_UPLOAD_FILE_FAIL_CODE_CONTENT,
+                                multipartFile == null ? null : multipartFile.getOriginalFilename()));
+            }else {
+                filePaths.add(JsonUtil
+                        .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
+                                ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curPath));
+            }
+        }
+        return filePaths;
+    }
+
 }

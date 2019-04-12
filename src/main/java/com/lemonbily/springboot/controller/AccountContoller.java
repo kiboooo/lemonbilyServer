@@ -114,7 +114,7 @@ public class AccountContoller extends BaseController<Account> {
      * @return 返回图片在服务器上的地址。
      */
 
-    @RequestMapping(value = "/updateAvatar",
+    @RequestMapping(value = "/uploadAvatar",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
@@ -131,7 +131,7 @@ public class AccountContoller extends BaseController<Account> {
         if (aId < 1000) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_FAIL_CODE,
-                            ResponseCodeUtil.LEMONBILY_ACCOUNT_AID_FAIL_CODE_CONTENT, null)
+                            ResponseCodeUtil.LEMONBILY_ACCOUNT_AID_FAIL_CODE_CONTENT, image.getOriginalFilename())
                     .toJSONString();
         }
 //        服务器环境
@@ -140,14 +140,55 @@ public class AccountContoller extends BaseController<Account> {
 
         //debug环境
         String AvatarUrl = FileUtil.upload(image, aId.toString(),
-                CommonBean.DEBUG_SERVER_AVATAR_RELATIVE_PATH, FileUtil.USER_AVATAR_PREFIX, image.getOriginalFilename());
+                CommonBean.DEBUG_SERVER_AVATAR_RELATIVE_PATH, FileUtil.USER_AVATAR_PREFIX);
         if (AvatarUrl == null) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_ACCOUNT_UPLOAD_FILE_FAIL_CODE,
-                            ResponseCodeUtil.LEMONBILY_ACCOUNT_UPLOAD_FILE_FAIL_CODE_CONTENT, image)
+                            ResponseCodeUtil.LEMONBILY_ACCOUNT_UPLOAD_FILE_FAIL_CODE_CONTENT, image.getOriginalFilename())
                     .toJSONString();
         } else{
             logger.info(AvatarUrl);
+            return JsonUtil
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
+                            ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, AvatarUrl)
+                    .toJSONString();
+        }
+    }
+
+
+    @RequestMapping(value = "/uploadAvatars",
+            method = RequestMethod.POST,
+            produces = "application/json;charset=UTF-8"
+    )
+    public String updateAvatars(@RequestParam("aid") Integer aId,
+                               @RequestParam("avatarImages") MultipartFile[] image) {
+
+        logger.info("----文件上传开始----");
+        if (null == image || null == aId || image.length <=0) {
+            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_ACCOUNT_INSERT_OBJECT_NULL_CODE,
+                    ResponseCodeUtil.LEMONBILY_ACCOUNT_INSERT_OBJECT_NULL_CONTENT, null)
+                    .toJSONString();
+        }
+        if (aId < 1000) {
+            return JsonUtil
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_FAIL_CODE,
+                            ResponseCodeUtil.LEMONBILY_ACCOUNT_AID_FAIL_CODE_CONTENT, null)
+                    .toJSONString();
+        }
+//        服务器环境
+//        String AvatarUrl = FileUtil.upload(image, aId.toString(),
+//                CommonBean.SERVER_AVATAR_RELATIVE_PATH, FileUtil.USER_AVATAR_PREFIX, image.getOriginalFilename());
+
+        //debug环境
+        List AvatarUrl = FileUtil.upload(image, aId.toString(),
+                CommonBean.DEBUG_SERVER_AVATAR_RELATIVE_PATH, FileUtil.USER_AVATAR_PREFIX);
+        if (AvatarUrl == null) {
+            return JsonUtil
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_ACCOUNT_UPLOAD_FILE_FAIL_CODE,
+                            ResponseCodeUtil.LEMONBILY_ACCOUNT_UPLOAD_FILE_FAIL_CODE_CONTENT, null)
+                    .toJSONString();
+        } else{
+            logger.info(AvatarUrl.toString());
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
                             ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, AvatarUrl)
