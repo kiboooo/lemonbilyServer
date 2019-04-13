@@ -22,7 +22,7 @@ public interface CommentMapper {
      */
     List<Comment> selectAll();
 
-    Comment selectByComID(int comid);
+    Comment selectByComID(@Param("comID") int comID);
 
     List<Comment> selectByUID(@Param("uid") int uid);
 
@@ -32,5 +32,5 @@ public interface CommentMapper {
                                             @Param("comtype")int comtype,
                                             @Param("toid")int toid);
 
-    int deleteByComID(int comid);
+    int deleteByComID(@Param("comID") int comID);
 }

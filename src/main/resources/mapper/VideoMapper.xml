@@ -33,7 +33,7 @@
       #{vtimer,jdbcType=VARCHAR})
   </insert>
 
-  <delete id="deleteByVID" parameterType="java.lang.Integer">
+  <delete id="deleteByVID">
     DELETE FROM video
     WHERE  VID = #{vid,jdbcType=INTEGER}
   </delete>
@@ -66,6 +66,13 @@
     WHERE VID = #{vid,jdbcType=INTEGER}
   </update>
 
+  <update id="updateAddPlay">
+    UPDATE video
+    SET
+      VPlayNum = VPlayNum + 1
+    WHERE VID = #{vid,jdbcType=INTEGER}
+  </update>
+
 
   <select id="selectAll" resultMap="BaseResultMap">
     <!--
@@ -76,12 +83,12 @@
     from video
   </select>
 
-  <select id="selectByVID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  <select id="selectByVID" resultMap="BaseResultMap" >
     select *
     from video where VID = #{vid,jdbcType=INTEGER}
   </select>
 
-  <select id="selectBySID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  <select id="selectBySID" resultMap="BaseResultMap" >
     select *
     from video where SID = #{sid,jdbcType=INTEGER}
   </select>

@@ -8,6 +8,7 @@ import com.lemonbily.springboot.mapper.LoginMapper;
 import com.lemonbily.springboot.util.JsonUtil;
 import com.lemonbily.springboot.util.ResponseCodeUtil;
 import com.lemonbily.springboot.util.TokenUtil;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -124,8 +125,9 @@ public class LoginController extends BaseController<Login> {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/logout/{id}", produces = "application/json;charset=UTF-8")
-    public String logout(@PathVariable("id") int id) {
+    @RequestMapping(value = "/logout",
+            method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public String logout(@RequestParam(value = "id") int id) {
         if (id < 1000) {
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_LOGOUT_FAIL_CODE,
                     ResponseCodeUtil.LEMONBILY_LOGIN_LOGOUT_FAIL_CODE_CONTENT, null)
@@ -145,8 +147,9 @@ public class LoginController extends BaseController<Login> {
      *  @return
      */
     @Override
-    @RequestMapping(value = "/permanentLogout/{id}", produces = "application/json;charset=UTF-8")
-    public String deleteByID(@PathVariable("id") int id) {
+    @RequestMapping(value = "/permanentLogout",
+            method = RequestMethod.POST,  produces = "application/json;charset=UTF-8")
+    public String deleteByID(int id) {
         if (loginMapper.deleteByID(id) < 1) {
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_PERMANENTLOGOUT_FAIL_CODE,
                     ResponseCodeUtil.LEMONBILY_LOGIN_PERMANENTLOGOUT_FAIL_CODE_CONTENT, null)
@@ -164,7 +167,8 @@ public class LoginController extends BaseController<Login> {
      * @return
      */
     @Override
-    @RequestMapping(value = "/changePassWord", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/changePassWord",
+            method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public String update(@RequestBody Login record) {
         if (null == record || loginMapper.update(record) < 1) {
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_UPDATE_ERRO_CODE,
@@ -183,7 +187,8 @@ public class LoginController extends BaseController<Login> {
      * @return
      */
     @Override
-    @RequestMapping(value = "/getLoginAll", produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/getLoginAll",
+            produces = "application/json;charset=UTF-8")
     public String selectAll() {
         List<Login> list = loginMapper.selectAll();
         if ((list) != null) {
@@ -212,9 +217,10 @@ public class LoginController extends BaseController<Login> {
      * @return
      */
     @Override
-    @RequestMapping(value = "/getLogin/{id}", produces = "application/json;charset=UTF-8")
-    public String selectByID(@PathVariable("id") int id) {
-        logger.info("/getLogin/{id}");
+    @RequestMapping(value = "/getLogin",
+            method = RequestMethod.POST,
+            produces = "application/json;charset=UTF-8")
+    public String selectByID(int id) {
         Login login = loginMapper.selectByID(id);
         if (null == login) {
             return JsonUtil
@@ -236,17 +242,18 @@ public class LoginController extends BaseController<Login> {
     /**
      * 检查该用户的是否有效存活。
      *
-     * @param id
+     * @param LoginID
      * @return
      */
-    @RequestMapping(value = "/checkLiveTime/{id}", produces = "application/json;charset=UTF-8")
-    public String checkLiveTime(@PathVariable("id") int id) {
-        if (id < 1000) {
+    @RequestMapping(value = "/checkLiveTime",
+            method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+    public String checkLiveTime( int LoginID) {
+        if (LoginID < 1000) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_FAIL_CODE, "请求账号错误", null)
                     .toJSONString();
         }
-        Date lastDate = loginMapper.liveTimeCheck(id);
+        Date lastDate = loginMapper.liveTimeCheck(LoginID);
         if (lastDate == null
                 || ((System.currentTimeMillis() - lastDate.getTime()) >= CommonBean.liveTimeLimit))
             return JsonUtil

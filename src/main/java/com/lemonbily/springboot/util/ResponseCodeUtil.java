@@ -115,4 +115,32 @@ public class ResponseCodeUtil {
     public static final String LEMONBILY_COMMENT_TYPE_ILLEGAL_CONTENT = "接收的comType是非法comType";
     public static final String LEMONBILY_COMMENT_TOID_ILLEGAL_CONTENT = "接收的ToID是非法ToID";
 
+    /**
+     * 交友圈动态操作相关状态码
+     * 状态码范围：1501-1600
+     */
+
+    public static final int LEMONBILY_PALCIRCLE_ILLEGAL_CODE = 1501;
+    public static final String LEMONBILY_PALCIRCLE_PALID_ILLEGAL_CONTENT = "接收的PALID是非法ID";
+    public static final String LEMONBILY_PALCIRCLE_PALUSER_ID_ILLEGAL_CONTENT = "接收的PALUSERID是非法ID";
+
+    /**
+     * 点赞操作相关状态码
+     * 状态码范围：1601-1700
+     */
+
+    public static final int LEMONBILY_LIKE_ILLEGAL_CODE = 1601;
+    public static final String LEMONBILY_LIKE_USERID_ILLEGAL_CONTENT = "接收的UserID是非法ID";
+    public static final String LEMONBILY_LIKE_PALID_ILLEGAL_CONTENT = "接收的PALID是非法ID";
+
+
+    /**
+     * 收藏操作相关状态码
+     * 状态码范围：1701-1800
+     */
+
+    public static final int LEMONBILY_COLLECT_ILLEGAL_CODE = 1701;
+    public static final String LEMONBILY_COLLECT_USERID_ILLEGAL_CONTENT = "接收的ColID是非法ID";
+    public static final String LEMONBILY_COLLECT_VID_ILLEGAL_CONTENT = "接收的VID是非法ID";
+
 }

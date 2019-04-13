@@ -13,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/AccountContoller")
-public class AccountContoller extends BaseController<Account> {
+@RequestMapping("/AccountController")
+public class AccountController extends BaseController<Account> {
 
     @Autowired(required = false)
     AccountMapper accountMapper;
@@ -53,10 +53,11 @@ public class AccountContoller extends BaseController<Account> {
     }
 
     @Override
-    @RequestMapping(value = "/deleteByID/{AId}",
+    @RequestMapping(value = "/deleteByID",
+            method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String deleteByID(@PathVariable("AId") int AId) {
+    public String deleteByID(int AId) {
         if (AId < 1000) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_FAIL_CODE,
@@ -211,10 +212,11 @@ public class AccountContoller extends BaseController<Account> {
     }
 
     @Override
-    @RequestMapping(value = "/selectByID/{AId}",
+    @RequestMapping(value = "/selectByID",
+            method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String selectByID(@PathVariable("AId") int AId) {
+    public String selectByID(int AId) {
         if (AId < 1000) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,

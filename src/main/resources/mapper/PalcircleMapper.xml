@@ -13,6 +13,7 @@
     <result column="PalPicture" jdbcType="VARCHAR" property="palpicture" />
     <result column="PalTime" jdbcType="TIMESTAMP" property="paltime" />
   </resultMap>
+
   <insert id="insert" parameterType="com.lemonbily.springboot.entity.Palcircle">
     <!--
       WARNING - @mbggenerated
@@ -26,6 +27,44 @@
     values (#{paluserid,jdbcType=INTEGER}, #{palcontent,jdbcType=VARCHAR}, #{pallicknum,jdbcType=INTEGER}, 
       #{palpicture,jdbcType=VARCHAR}, #{paltime,jdbcType=TIMESTAMP})
   </insert>
+
+  <delete id="deleteByPalID">
+    DELETE FROM palcircle
+    WHERE PalID = #{ palID,jdbcType=INTEGER }
+  </delete>
+
+  <update id="update" parameterType="com.lemonbily.springboot.entity.Palcircle">
+    UPDATE palcircle
+    <set>
+      <if test="paluserid != null">
+        PalUserID = #{paluserid,jdbcType=INTEGER},
+      </if>
+      <if test="palcontent != null">
+        PalContent = #{palcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="pallicknum != null">
+        PalLickNum = #{pallicknum,jdbcType=INTEGER},
+      </if>
+      <if test="palpicture != null">
+        PalPicture = #{palpicture,jdbcType=VARCHAR},
+      </if>
+      <if test="paltime != null">
+        PalTime = #{paltime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    WHERE PalID = #{ palid,jdbcType=INTEGER }
+  </update>
+  
+  <update id="updateLike">
+    UPDATE palcircle
+    <set>
+      <if test="likeType != null ">
+       PalLickNum = PalLickNum + #{likeType,jdbcType=INTEGER },
+      </if>
+    </set>
+    WHERE PalID = #{ palID,jdbcType=INTEGER }
+  </update>
+
   <select id="selectAll" resultMap="BaseResultMap">
     <!--
       WARNING - @mbggenerated
@@ -34,4 +73,16 @@
     select PalID, PalUserID, PalContent, PalLickNum, PalPicture, PalTime
     from palcircle
   </select>
+
+
+  <select id="selectByPalID" resultMap="BaseResultMap" >
+    select *
+    from palcircle where PalID = #{ palID,jdbcType=INTEGER }
+  </select>
+
+  <select id="selectByPalUserID" resultMap="BaseResultMap">
+    select *
+    from palcircle where PalUserID = #{palUserID,jdbcType=INTEGER}
+  </select>
+
 </mapper>

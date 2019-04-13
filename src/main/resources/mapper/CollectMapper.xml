@@ -10,6 +10,8 @@
     <result column="ColID" jdbcType="INTEGER" property="colid" />
     <result column="VID" jdbcType="INTEGER" property="vid" />
   </resultMap>
+
+  
   <insert id="insert" parameterType="com.lemonbily.springboot.entity.Collect">
     <!--
       WARNING - @mbggenerated
@@ -20,6 +22,17 @@
     values (#{colpid,jdbcType=INTEGER}, #{colid,jdbcType=INTEGER}, #{vid,jdbcType=INTEGER}
       )
   </insert>
+
+  <delete id="deleteByColPID">
+    DELETE FROM collect
+    WHERE ColPID = #{ colPID,jdbcType=INTEGER }
+  </delete>
+
+  <delete id="deleteByColIDAndVID">
+    DELETE FROM collect
+    WHERE ColID = #{ colID,jdbcType=INTEGER } AND VID = #{vid,jdbcType=INTEGER}
+  </delete>
+
   <select id="selectAll" resultMap="BaseResultMap">
     <!--
       WARNING - @mbggenerated
@@ -28,4 +41,30 @@
     select ColPID, ColID, VID
     from collect
   </select>
+
+  <select id="selectByColPID" resultMap="BaseResultMap" >
+    select *
+    from collect where ColPID = #{ colPID,jdbcType=INTEGER }
+  </select>
+
+  <select id="selectByColID" resultMap="BaseResultMap" >
+    select *
+    from collect where ColID = #{ colID,jdbcType=INTEGER }
+  </select>
+
+  <select id="selectByVID" resultMap="BaseResultMap">
+    select *
+    from collect where VID = #{vid,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByColIDAndVID" resultMap="BaseResultMap">
+    select *
+    from collect int not null where ColID = #{ colID,jdbcType=INTEGER } AND VID = #{vid,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectCollectNumberByVID" resultType="java.lang.Integer" >
+    select count(*)
+    from collect where VID = #{vid,jdbcType=INTEGER}
+  </select>
+
 </mapper>

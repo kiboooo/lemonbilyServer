@@ -2,6 +2,7 @@ package com.lemonbily.springboot.mapper;
 
 import com.lemonbily.springboot.entity.Series;
 import com.lemonbily.springboot.entity.Video;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,9 +23,9 @@ public interface SeriesMapper {
      */
     List<Series> selectAll();
 
-    Series selectBySID(int sid);
+    Series selectBySID(@Param("sid") int sid);
 
     int update(Series series);
 
-    int deleteBySID(int sid);
+    int deleteBySID(@Param("sid") int sid);
 }

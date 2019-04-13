@@ -1,6 +1,8 @@
 package com.lemonbily.springboot.mapper;
 
 import com.lemonbily.springboot.entity.Collect;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface CollectMapper {
@@ -19,4 +21,18 @@ public interface CollectMapper {
      * @mbggenerated
      */
     List<Collect> selectAll();
+
+    Collect selectByColPID(@Param("colPID") int colPID);
+
+    List<Collect> selectByColID(@Param("colID") int colID);
+
+    List<Collect> selectByVID(@Param("vid")int vid);
+
+    Collect selectByColIDAndVID(@Param("colID") int colID, @Param("vid")int vid);
+
+    int selectCollectNumberByVID(@Param("vid")int vid);
+
+    int deleteByColPID(@Param("colPID") int colPID);
+
+    int deleteByColIDAndVID(@Param("colID") int colID, @Param("vid")int vid);
 }

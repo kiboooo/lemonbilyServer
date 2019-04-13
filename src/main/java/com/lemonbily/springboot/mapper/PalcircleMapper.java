@@ -1,6 +1,8 @@
 package com.lemonbily.springboot.mapper;
 
 import com.lemonbily.springboot.entity.Palcircle;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface PalcircleMapper {
@@ -19,4 +21,21 @@ public interface PalcircleMapper {
      * @mbggenerated
      */
     List<Palcircle> selectAll();
+
+    int update(Palcircle palcircle);
+
+    /**
+     * 点赞或取消点赞的操作接口
+     *
+     * @param palID 被点赞的动态
+     * @param likeType likeType > 0 : 点赞数自增，likeType < 0 ：点赞数自减
+     * @return
+     */
+    int updateLikeNumber(@Param("palID") int palID , @Param("likeType") int likeType);
+
+    Palcircle selectByPalID(@Param("palID") int palID);
+
+    List<Palcircle> selectByPalUserID(@Param("palUserID") int palUserID);
+
+    int deleteByPalID(@Param("palID") int palID);
 }

@@ -2,6 +2,8 @@ package com.lemonbily.springboot.mapper;
 
 import com.lemonbily.springboot.entity.Account;
 import com.lemonbily.springboot.entity.Video;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface VideoMapper{
@@ -21,11 +23,13 @@ public interface VideoMapper{
      */
     List<Video> selectAll();
 
-    Video selectByVID(int vid);
+    Video selectByVID(@Param("vid") int vid);
 
-    List<Video> selectBySID(int sid);
+    List<Video> selectBySID(@Param("sid") int sid);
 
     int update(Video video);
 
-    int deleteByVID(int vid);
+    int updateAddPlay(@Param("vid") int vid);
+
+    int deleteByVID(@Param("vid") int vid);
 }

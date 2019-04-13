@@ -19,14 +19,14 @@
         )
     </insert>
 
-    <delete id="deleteByComID" parameterType="java.lang.Integer">
+    <delete id="deleteByComID">
         DELETE FROM comment
-        WHERE ComID = #{comid,jdbcType=INTEGER}
+        WHERE ComID = #{ comID,jdbcType=INTEGER}
     </delete>
 
-    <select id="selectByComID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    <select id="selectByComID" resultMap="BaseResultMap" >
     select *
-    from comment where ComID = #{comid,jdbcType=INTEGER}
+    from comment where ComID = #{comID,jdbcType=INTEGER}
   </select>
 
     <select id="selectByUID" resultMap="BaseResultMap" parameterType="java.lang.Integer">

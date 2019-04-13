@@ -46,9 +46,10 @@ public class SeriesController extends BaseController<Series> {
     }
 
     @Override
-    @RequestMapping(value = "/deleteByID/{sid}",
+    @RequestMapping(value = "/deleteByID",
+            method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
-    public String deleteByID(@PathVariable("sid") int sid) {
+    public String deleteByID(int sid) {
         if (sid <= 0) {
             return  JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
@@ -118,10 +119,11 @@ public class SeriesController extends BaseController<Series> {
     }
 
     @Override
-    @RequestMapping(value = "/selectBySID/{sid}",
+    @RequestMapping(value = "/selectBySID",
+            method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String selectByID(@PathVariable("sid") int sid) {
+    public String selectByID(int sid) {
         if (sid <= 0) {
             return  JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,

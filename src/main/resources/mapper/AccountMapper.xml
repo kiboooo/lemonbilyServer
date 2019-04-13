@@ -35,7 +35,7 @@
         from account
     </select>
 
-    <select id="selectByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    <select id="selectByID" resultMap="BaseResultMap">
 
     select AId, AName, ASex, AAvatar
     from account where AId = #{aid,jdbcType=INTEGER}
@@ -57,7 +57,7 @@
         WHERE AId = #{aid,jdbcType=INTEGER}
     </update>
 
-    <delete id="deleteByID" parameterType="java.lang.Integer">
+    <delete id="deleteByID" >
     DELETE FROM account
     WHERE  AId = #{aid,jdbcType=INTEGER}
   </delete>

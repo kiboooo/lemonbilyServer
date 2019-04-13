@@ -1,6 +1,7 @@
 package com.lemonbily.springboot.mapper;
 
 import com.lemonbily.springboot.entity.Login;
+import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -23,13 +24,13 @@ public interface LoginMapper {
      */
     List<Login> selectAll();
 
-    Login selectByID(int id);
+    Login selectByID(@Param("id") int id);
 
-    Login selectByPhone(String lphone);
+    Login selectByPhone(@Param("lphone") String lphone);
 
     int update(Login login);
 
-    int deleteByID(int id);
+    int deleteByID(@Param("id") int id);
 
     /**
      *  用户登陆生命周期查询
@@ -38,6 +39,6 @@ public interface LoginMapper {
      *              否则，需要重新登陆。
      */
 
-    Date liveTimeCheck(int LoginID);
+    Date liveTimeCheck(@Param("LoginID") int LoginID);
 
 }

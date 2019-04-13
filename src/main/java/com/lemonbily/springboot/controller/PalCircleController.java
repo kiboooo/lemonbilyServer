@@ -1,26 +1,31 @@
 package com.lemonbily.springboot.controller;
 
-import com.lemonbily.springboot.entity.Video;
-import com.lemonbily.springboot.mapper.VideoMapper;
+import com.lemonbily.springboot.entity.Palcircle;
+import com.lemonbily.springboot.mapper.PalcircleMapper;
 import com.lemonbily.springboot.util.JsonUtil;
 import com.lemonbily.springboot.util.ResponseCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/VideoController")
-public class VideoController extends BaseController<Video> {
+@RequestMapping("/PalCircleController")
+public class PalCircleController extends BaseController<Palcircle> {
 
     @Autowired(required = false)
-    VideoMapper videoMapper;
+    PalcircleMapper palcircleMapper;
 
     @Override
+    @Transactional
     @RequestMapping(value = "/insert",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
-    public String insert(@RequestBody  Video record) {
+    public String insert(@RequestBody Palcircle record) {
         logger.info("----------插入开始-----------");
         if (null == record) {
             logger.error("接收的对象为空");
@@ -28,13 +33,13 @@ public class VideoController extends BaseController<Video> {
                     ResponseCodeUtil.LEMONBILY_OBJECT_NULL_CONTENT, null)
                     .toJSONString();
         }
-        if (null == record.getSid() || record.getSid() <= 0) {
-            logger.error("接收的sid是非法id");
-            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_VIDEO_ID_ILLEGAL_CODE,
-                    ResponseCodeUtil.LEMONBILY_VIDEO_INSERT_SID_ILLEGAL_CODE_CONTENT, null)
+        if (null == record.getPaluserid() || record.getPaluserid() < 1000) {
+            logger.error("接收的userID是非法id");
+            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_PALCIRCLE_ILLEGAL_CODE,
+                    ResponseCodeUtil.LEMONBILY_PALCIRCLE_PALUSER_ID_ILLEGAL_CONTENT, null)
                     .toJSONString();
         }
-        if (videoMapper.insert(record) < 1) {
+        if (palcircleMapper.insert(record) < 1) {
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_INSERT_ERRO_CODE,
                     ResponseCodeUtil.LEMONBILY_INSERT_ERRO_CODE_CONTENT, null)
                     .toJSONString();
@@ -46,19 +51,20 @@ public class VideoController extends BaseController<Video> {
     }
 
     @Override
-    @RequestMapping(value = "/deleteByID",
+    @Transactional
+    @RequestMapping(value = "/deleteByPalID",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String deleteByID( int vid) {
-        if (vid <= 0) {
+    public String deleteByID(int palID) {
+        if (palID <= 0) {
             return  JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
                             ResponseCodeUtil.LEMONBILY_DELETE_ID_ILLEGAL_CONTENT, null)
                     .toJSONString();
         }
-        if (videoMapper.deleteByVID(vid) < 1) {
-           return JsonUtil
+        if (palcircleMapper.deleteByPalID(palID) < 1) {
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
                             ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE_CONTENT, null)
                     .toJSONString();
@@ -69,25 +75,24 @@ public class VideoController extends BaseController<Video> {
                 .toJSONString();
     }
 
-
     @Override
     @RequestMapping(value = "/update",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String update(@RequestBody Video record) {
+    public String update(@RequestBody Palcircle record) {
         if (null == record) {
             logger.error("接收的对象为空");
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_UPDATE_ERRO_CODE,
                     ResponseCodeUtil.LEMONBILY_OBJECT_NULL_CONTENT, null)
                     .toJSONString();
         }
-        if (null == record.getVid() || record.getVid() <= 0) {
-            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_VIDEO_ID_ILLEGAL_CODE,
-                    ResponseCodeUtil.LEMONBILY_VIDEO_UPDATE_VID_ILLEGAL_CODE_CONTENT, null)
+        if (null == record.getPalid() || record.getPalid() <= 0) {
+            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_PALCIRCLE_ILLEGAL_CODE,
+                    ResponseCodeUtil.LEMONBILY_PALCIRCLE_PALID_ILLEGAL_CONTENT, null)
                     .toJSONString();
         }
-        if (videoMapper.update(record) < 1) {
+        if (palcircleMapper.update(record) < 1) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_UPDATE_ERRO_CODE,
                             ResponseCodeUtil.LEMONBILY_UPDATE_ERRO_CODE_CONTENT, null)
@@ -98,24 +103,24 @@ public class VideoController extends BaseController<Video> {
                 .toJSONString();
     }
 
-
-    @RequestMapping(value = "/updateAddPlay",
+    @RequestMapping(value = "/updateLikeNumber",
             method = RequestMethod.POST,
-            produces = "application/json;charset=UTF-8")
-    public String updateAddPlay(int vid) {
-        if (vid <= 0) {
-            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_VIDEO_ID_ILLEGAL_CODE,
-                    ResponseCodeUtil.LEMONBILY_VIDEO_UPDATE_VID_ILLEGAL_CODE_CONTENT, null)
+            produces = "application/json;charset=UTF-8"
+    )
+    public String updateLikeNumber(int palID ,int likeType) {
+        if ( palID <= 0) {
+            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_PALCIRCLE_ILLEGAL_CODE,
+                    ResponseCodeUtil.LEMONBILY_PALCIRCLE_PALID_ILLEGAL_CONTENT, null)
                     .toJSONString();
         }
-        if (videoMapper.updateAddPlay(vid) < 1) {
+        if (palcircleMapper.updateLikeNumber(palID, likeType > 0 ? 1 : -1) < 1) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_UPDATE_ERRO_CODE,
                             ResponseCodeUtil.LEMONBILY_UPDATE_ERRO_CODE_CONTENT, null)
                     .toJSONString();
         }
         return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, "vid is " + vid)
+                ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, "likeType is :" + likeType)
                 .toJSONString();
     }
 
@@ -124,33 +129,33 @@ public class VideoController extends BaseController<Video> {
             produces = "application/json;charset=UTF-8"
     )
     public String selectAll() {
-        List<Video> videoList = videoMapper.selectAll();
-        if (null == videoList) {
-            logger.error("查询不到video列表中的数据");
+        List<Palcircle> palList = palcircleMapper.selectAll();
+        if (null == palList) {
+            logger.error("查询不到PalCircle列表中的数据");
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
                             ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
                     .toJSONString();
         }
         return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, videoList)
+                ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, palList)
                 .toJSONString();
     }
 
     @Override
-    @RequestMapping(value = "/selectByVID",
+    @RequestMapping(value = "/selectByPalID",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String selectByID(int vid) {
-        if (vid <= 0) {
+    public String selectByID(int palID) {
+        if (palID <= 0) {
             return  JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
                             ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null)
                     .toJSONString();
         }
-        Video curVideo = videoMapper.selectByVID(vid);
-        if (null == curVideo){
+        Palcircle curPalCircle = palcircleMapper.selectByPalID(palID);
+        if (null == curPalCircle){
             return  JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
                             ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
@@ -158,24 +163,24 @@ public class VideoController extends BaseController<Video> {
         }
         return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curVideo)
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curPalCircle)
                 .toJSONString();
     }
 
 
-    @RequestMapping(value = "/selectBySID",
+    @RequestMapping(value = "/selectByPalUserID",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String selectBySID(int sid) {
-        if (sid <= 0) {
+   public String selectByPalUserID (int palUserID){
+        if (palUserID <= 0) {
             return  JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
                             ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null)
                     .toJSONString();
         }
-        List<Video> curVideoList = videoMapper.selectBySID(sid);
-        if (null == curVideoList || curVideoList.size() == 0){
+        List<Palcircle> curPalList = palcircleMapper.selectByPalUserID(palUserID);
+        if (null == curPalList || curPalList.size() == 0){
             return  JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
                             ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
@@ -183,7 +188,7 @@ public class VideoController extends BaseController<Video> {
         }
         return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curVideoList)
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curPalList)
                 .toJSONString();
-    }
+   }
 }

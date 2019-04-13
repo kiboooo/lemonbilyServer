@@ -4,7 +4,6 @@ import com.lemonbily.springboot.entity.Comment;
 import com.lemonbily.springboot.mapper.CommentMapper;
 import com.lemonbily.springboot.util.JsonUtil;
 import com.lemonbily.springboot.util.ResponseCodeUtil;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,10 +46,11 @@ public class CommentController extends BaseController<Comment> {
     }
 
     @Override
-    @RequestMapping(value = "/deleteByID/{comID}",
+    @RequestMapping(value = "/deleteByID",
+            method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String deleteByID(@PathVariable("comID") int comID) {
+    public String deleteByID(int comID) {
         if (comID <= 0) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
@@ -96,10 +96,11 @@ public class CommentController extends BaseController<Comment> {
     }
 
     @Override
-    @RequestMapping(value = "/selectByComID/{comID}",
+    @RequestMapping(value = "/selectByComID",
+            method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String selectByID(@PathVariable("comID") int comID) {
+    public String selectByID(int comID) {
         if (comID <= 0) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
@@ -124,7 +125,7 @@ public class CommentController extends BaseController<Comment> {
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String selectByUID(@RequestParam(value = "uid") int uid) {
+    public String selectByUID(int uid) {
         if (uid < 1000) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
@@ -148,8 +149,7 @@ public class CommentController extends BaseController<Comment> {
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String selectByUIDAndType(int uid
-            ,  int comtype) {
+    public String selectByUIDAndType(int uid,int comtype) {
         if ( uid < 1000) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
@@ -179,8 +179,7 @@ public class CommentController extends BaseController<Comment> {
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String selectByUIDAndTypeAndToID(@RequestParam(value = "uid") int uid,
-                                            @RequestParam(value = "comtype") int comtype, @RequestParam(value = "toid") int toid) {
+    public String selectByUIDAndTypeAndToID( int uid,int comtype,int toid) {
         if ( uid < 1000) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,

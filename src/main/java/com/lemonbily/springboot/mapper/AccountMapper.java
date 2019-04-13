@@ -1,6 +1,8 @@
 package com.lemonbily.springboot.mapper;
 
 import com.lemonbily.springboot.entity.Account;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface AccountMapper {
@@ -20,9 +22,9 @@ public interface AccountMapper {
      */
     List<Account> selectAll();
 
-    Account selectByID(int AId);
+    Account selectByID(@Param("aid") int AId);
 
     int update(Account account);
 
-    int deleteByID(int AId);
+    int deleteByID(@Param("aid") int AId);
 }

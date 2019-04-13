@@ -26,9 +26,9 @@
       #{snum,jdbcType=INTEGER})
   </insert>
 
-  <delete id="deleteBySID" parameterType="java.lang.Integer">
+  <delete id="deleteBySID" >
     DELETE FROM series
-    WHERE SeriesID = #{seriesid,jdbcType=INTEGER}
+    WHERE SeriesID = #{sid,jdbcType=INTEGER}
   </delete>
 
   <update id="update" parameterType="com.lemonbily.springboot.entity.Series">
@@ -59,8 +59,8 @@
     from series
   </select>
 
-  <select id="selectBySID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  <select id="selectBySID" resultMap="BaseResultMap" >
     select *
-    from series where SeriesID = #{seriesid,jdbcType=INTEGER}
+    from series where SeriesID = #{sid,jdbcType=INTEGER}
   </select>
 </mapper>
