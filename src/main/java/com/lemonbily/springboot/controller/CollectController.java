@@ -1,9 +1,7 @@
 package com.lemonbily.springboot.controller;
 
 import com.lemonbily.springboot.entity.Collect;
-import com.lemonbily.springboot.entity.Like;
 import com.lemonbily.springboot.mapper.CollectMapper;
-import com.lemonbily.springboot.mapper.PalcircleMapper;
 import com.lemonbily.springboot.util.JsonUtil;
 import com.lemonbily.springboot.util.ResponseCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;

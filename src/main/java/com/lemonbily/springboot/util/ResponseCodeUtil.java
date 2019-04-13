@@ -143,4 +143,13 @@ public class ResponseCodeUtil {
     public static final String LEMONBILY_COLLECT_USERID_ILLEGAL_CONTENT = "接收的ColID是非法ID";
     public static final String LEMONBILY_COLLECT_VID_ILLEGAL_CONTENT = "接收的VID是非法ID";
 
+
+    /**
+     * 关注好友操作相关状态码
+     * 状态码范围：1801-1900
+     */
+
+    public static final int LEMONBILY_BUDDY_ILLEGAL_CODE = 1801;
+    public static final String LEMONBILY_BUDDY_USERID_ILLEGAL_CONTENT = "接收的UserID是非法ID";
+
 }

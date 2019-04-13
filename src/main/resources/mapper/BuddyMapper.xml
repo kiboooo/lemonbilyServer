@@ -10,6 +10,7 @@
     <result column="UserID" jdbcType="INTEGER" property="userid" />
     <result column="BuddyID" jdbcType="INTEGER" property="buddyid" />
   </resultMap>
+
   <insert id="insert" parameterType="com.lemonbily.springboot.entity.Buddy">
     <!--
       WARNING - @mbggenerated
@@ -21,6 +22,17 @@
     insert into buddy (UserID, BuddyID)
     values (#{userid,jdbcType=INTEGER}, #{buddyid,jdbcType=INTEGER})
   </insert>
+
+  <delete id="deleteByBID">
+     DELETE FROM buddy
+    WHERE BID = #{bid, jdbcType=INTEGER};
+  </delete>
+
+  <delete id="deleteByUIDandBuddlyID" >
+    DELETE FROM buddy
+    WHERE UserID = #{userID,jdbcType=INTEGER} AND BuddyID = #{ buddyID,jdbcType=INTEGER};
+  </delete>
+
   <select id="selectAll" resultMap="BaseResultMap">
     <!--
       WARNING - @mbggenerated
@@ -29,4 +41,16 @@
     select BID, UserID, BuddyID
     from buddy
   </select>
+
+  <select id="selectByBID" resultMap="BaseResultMap" >
+    select *
+    from buddy where BID = #{bid, jdbcType=INTEGER};
+  </select>
+
+  <select id="selectByUserID" resultType="java.lang.Integer" >
+    SELECT UserID FROM buddy WHERE BuddyID = #{userID, jdbcType=INTEGER}
+    UNION ALL
+    SELECT BuddyID FROM buddy WHERE UserID= #{userID, jdbcType=INTEGER};
+  </select>
+
 </mapper>
