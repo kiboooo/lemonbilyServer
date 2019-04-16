@@ -73,7 +73,7 @@ public class LoginController extends BaseController<Login> {
         logger.info("-------- 注册接口校验传入对象结束 -------");
         String mToken = TokenUtil.generateTokenAddMap(record);
         Login insertFinishData = loginMapper.selectByPhone(record.getLphone());
-        return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_SUCCESS_CODE,
+        return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
                 ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_SUCCESS_CONTENT, mToken, insertFinishData)
                 .toJSONString();
     }
@@ -134,7 +134,7 @@ public class LoginController extends BaseController<Login> {
                     .toJSONString();
         }
         TokenUtil.removeToken(String.valueOf(id));
-        return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_LOGOUT_SUCCESS_CODE,
+        return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
                 ResponseCodeUtil.LEMONBILY_LOGIN_LOGOUT_SUCCESS_CODE_CONTENT, null)
                 .toJSONString();
     }
@@ -155,30 +155,50 @@ public class LoginController extends BaseController<Login> {
                     ResponseCodeUtil.LEMONBILY_LOGIN_PERMANENTLOGOUT_FAIL_CODE_CONTENT, null)
                     .toJSONString();
         }
-        return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_PERMANENTLOGOUT_SUCCESS_CODE,
+        return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
                 ResponseCodeUtil.LEMONBILY_LOGIN_PERMANENTLOGOUT_SUCCESS_CODE_CONTENT, null)
+                .toJSONString();
+    }
+
+
+    @Override
+    public String update(Login record) {
+        if (null == record ) {
+            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_UPDATE_ERRO_CODE,
+                    ResponseCodeUtil.LEMONBILY_OBJECT_NULL_CONTENT, null)
+                    .toJSONString();
+        }
+        if (loginMapper.update(record) < 1){
+            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_CHANGE_PASSWORD_FAIL_CODE,
+                    ResponseCodeUtil.LEMONBILY_LOGIN_CHANGE_PASSWORD_FAIL_CODE_CONTENT, null)
+                    .toJSONString();
+        }
+        return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
+                ResponseCodeUtil.LEMONBILY_LOGIN_CHANGE_PASSWORD_SUCCESS_CODE_CONTENT, null)
                 .toJSONString();
     }
 
     /**
      * 修改密码接口
      *
-     * @param record
+     * @param
      * @return
      */
-    @Override
+    @Transactional
     @RequestMapping(value = "/changePassWord",
-            method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public String update(@RequestBody Login record) {
-        if (null == record || loginMapper.update(record) < 1) {
-            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_UPDATE_ERRO_CODE,
-                    ResponseCodeUtil.LEMONBILY_OBJECT_NULL_CONTENT, null)
+            method = RequestMethod.POST,
+            produces = "application/json;charset=UTF-8")
+    public String changePassWord(@RequestParam(value = "id") int id,
+                         @RequestParam(value = "lphone") String lphone,
+                         @RequestParam(value = "oldPassWord") String oldPassWord,
+                         @RequestParam(value = "newPassWord") String newPassWord) {
+        if (loginMapper.checkPassWord(lphone, oldPassWord) <= 0) {
+            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_CHANGE_PASSWORD_FAIL_CODE,
+                    ResponseCodeUtil.LEMONBILY_LOGIN_OLDPASSWORD_FAIL_CODE_CONTENT, null)
                     .toJSONString();
         }
-        return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_CHANGE_PASSWORD_SUCCESS_CODE,
-                ResponseCodeUtil.LEMONBILY_LOGIN_CHANGE_PASSWORD_SUCCESS_CODE_CONTENT, null)
-                .toJSONString();
-
+        Login record = new Login(id, newPassWord, lphone, null);
+        return update(record);
     }
 
     /**

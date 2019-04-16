@@ -28,6 +28,8 @@ public interface LoginMapper {
 
     Login selectByPhone(@Param("lphone") String lphone);
 
+    int checkPassWord(@Param("lphone") String lphone,@Param("oldPassWord") String oldPassWord);
+
     int update(Login login);
 
     int deleteByID(@Param("id") int id);

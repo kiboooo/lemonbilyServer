@@ -76,6 +76,7 @@ public class ResponseCodeUtil {
     public static final String LEMONBILY_LOGIN_CHANGE_PASSWORD_SUCCESS_CODE_CONTENT = "修改密码成功";
     public static final int LEMONBILY_LOGIN_CHANGE_PASSWORD_FAIL_CODE = 1052;
     public static final String LEMONBILY_LOGIN_CHANGE_PASSWORD_FAIL_CODE_CONTENT = "修改密码失败";
+    public static final String LEMONBILY_LOGIN_OLDPASSWORD_FAIL_CODE_CONTENT = "输入的旧密码错误";
 
     //完善个人信息
     public static final String LEMONBILY_ACCOUNT_INSERT_SUCCESS_CONTENT = "插入ACCOUNT对象成功";

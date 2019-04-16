@@ -35,6 +35,11 @@
     select Id, LPassWord, LPhone, LLiveTime
     from login where LPhone = #{lphone,jdbcType=CHAR}
   </select>
+
+  <select id="checkPassWord" resultType="java.lang.Integer">
+    select *
+    from login where LPhone = #{lphone,jdbcType=CHAR} AND LPassWord = #{oldPassWord,jdbcType=VARCHAR}
+  </select>
   
   <delete id="deleteByID">
     DELETE FROM login
