@@ -214,8 +214,8 @@ public class LoginController extends BaseController<Login> {
         if ((list) != null) {
 
             //TODO :测试用代码，认为注册并获取token
-            String token = TokenUtil.generateTokenAddMap(list.get(2));
-            logger.info(token);
+//            String token = TokenUtil.generateTokenAddMap(list.get(2));
+//            logger.info(token);
             //测试结束
 
             return JsonUtil
@@ -249,11 +249,15 @@ public class LoginController extends BaseController<Login> {
                     .toJSONString();
         } else {
             //TODO: 测试环境下获取测试用Token，上线环境下必须去除
-            Token token = TokenUtil.generateLoginUserToken(login);
-            return JsonUtil
+//            Token token = TokenUtil.generateLoginUserToken(login);
+/*            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
                             ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT,
                             token.getToken(), login)
+                    .toJSONString();*/
+            return JsonUtil
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
+                            ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, login)
                     .toJSONString();
         }
 
