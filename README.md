@@ -2,13 +2,6 @@
 
 > Lemonbily Server 后台管理文档
 >
-> 后台服务程序地址说明：
->
-> ip：47.107.46.0:80
->
-> 部署路径：/lemonbily/Server
->
-> 请求路径的前缀：47.107.46.0:80/lemonbily/**
 
 ### 共性：
 
@@ -69,7 +62,7 @@ phone：12345678900 （已经登录的账户电话）
 
 #### register注册接口(不需要Token)
 
-path：47.107.46.0:80/lemonbily/LoginControlle/registered
+path：{ prefix }/lemonbily/LoginControlle/registered
 
 method： POST
 
@@ -116,7 +109,7 @@ body（JSON）：
 
 #### login登录接口(不需要Token)
 
-path：47.107.46.0:80/lemonbily/LoginControlle/login
+path：{ prefix }/lemonbily/LoginControlle/login
 
 method： POST
 
@@ -166,7 +159,7 @@ body（ from表单 ）：
 
 #### logout登出接口 （注销）
 
-path：47.107.46.0:80/lemonbily/LoginControlle/logout
+path：{ prefix }/lemonbily/LoginControlle/logout
 
 method： POST
 
@@ -200,7 +193,7 @@ body（ from表单 ）：
 
 #### permanentLogout 永久注销接口
 
-path：47.107.46.0:80/lemonbily/LoginControlle/permanentLogout
+path：{ prefix }/lemonbily/LoginControlle/permanentLogout
 
 method： POST
 
@@ -234,7 +227,7 @@ body（ from表单 ）：
 
 #### changePassWord修改密码接口
 
-path：47.107.46.0:80/lemonbily/LoginControlle/changePassWord
+path：{ prefix }/lemonbily/LoginControlle/changePassWord
 
 method： POST
 
@@ -271,7 +264,7 @@ body（ from表单 ）：
 
 #### getLoginAll获取表中所有用户
 
-path：47.107.46.0:80/lemonbily/LoginControlle/getLoginAll
+path：{ prefix }/lemonbily/LoginControlle/getLoginAll
 
 method： GET
 
