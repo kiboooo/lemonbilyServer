@@ -127,7 +127,7 @@ public class LoginController extends BaseController<Login> {
      */
     @RequestMapping(value = "/logout",
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public String logout(@RequestParam(value = "id") int id) {
+    public String logout(@RequestParam(value = "lphone") int id) {
         if (id < 1000) {
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_LOGOUT_FAIL_CODE,
                     ResponseCodeUtil.LEMONBILY_LOGIN_LOGOUT_FAIL_CODE_CONTENT, null)
