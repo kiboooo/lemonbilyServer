@@ -7,6 +7,7 @@ import com.lemonbily.springboot.util.FileUtil;
 import com.lemonbily.springboot.util.JsonUtil;
 import com.lemonbily.springboot.util.ResponseCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -111,6 +112,7 @@ public class AccountController extends BaseController<Account> {
      * @return 返回图片在服务器上的地址。
      */
 
+    @Transactional
     @RequestMapping(value = "/uploadAvatar",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
@@ -133,22 +135,27 @@ public class AccountController extends BaseController<Account> {
         }
         //TODO: 本地环境和线上的环境，对于资源的存储地址；
 //        服务器环境
-        String AvatarUrl = FileUtil.upload(image, aId.toString(),
+        String avatarUrl = FileUtil.upload(image, aId.toString(),
                 CommonBean.SERVER_AVATAR_RELATIVE_PATH, FileUtil.USER_AVATAR_PREFIX);
 
         //debug环境
-//        String AvatarUrl = FileUtil.upload(image, aId.toString(),
+//        String avatarUrl = FileUtil.upload(image, aId.toString(),
 //                CommonBean.DEBUG_SERVER_AVATAR_RELATIVE_PATH, FileUtil.USER_AVATAR_PREFIX);
-        if (AvatarUrl == null) {
+        if (avatarUrl == null) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_ACCOUNT_UPLOAD_FILE_FAIL_CODE,
                             ResponseCodeUtil.LEMONBILY_ACCOUNT_UPLOAD_FILE_FAIL_CODE_CONTENT, image.getOriginalFilename())
                     .toJSONString();
         } else{
-            logger.info(AvatarUrl);
+            logger.info(avatarUrl);
+            Account account = accountMapper.selectByID(aId);
+            if (account != null) {
+                account.setAavatar(avatarUrl);
+                accountMapper.update(account);
+            }
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                            ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, AvatarUrl)
+                            ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, avatarUrl)
                     .toJSONString();
         }
     }

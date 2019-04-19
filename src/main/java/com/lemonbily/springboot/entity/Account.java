@@ -49,6 +49,16 @@ public class Account implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
+    public Account() {
+    }
+
+    public Account(Integer aid, String aname, String asex, String aavatar) {
+        this.aid = aid;
+        this.aname = aname;
+        this.asex = asex;
+        this.aavatar = aavatar;
+    }
+
     public Integer getAid() {
         return aid;
     }
