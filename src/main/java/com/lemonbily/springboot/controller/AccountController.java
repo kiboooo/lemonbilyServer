@@ -131,13 +131,14 @@ public class AccountController extends BaseController<Account> {
                             ResponseCodeUtil.LEMONBILY_ACCOUNT_AID_FAIL_CODE_CONTENT, image.getOriginalFilename())
                     .toJSONString();
         }
+        //TODO: 本地环境和线上的环境，对于资源的存储地址；
 //        服务器环境
-//        String AvatarUrl = FileUtil.upload(image, aId.toString(),
-//                CommonBean.SERVER_AVATAR_RELATIVE_PATH, FileUtil.USER_AVATAR_PREFIX, image.getOriginalFilename());
+        String AvatarUrl = FileUtil.upload(image, aId.toString(),
+                CommonBean.SERVER_AVATAR_RELATIVE_PATH, FileUtil.USER_AVATAR_PREFIX);
 
         //debug环境
-        String AvatarUrl = FileUtil.upload(image, aId.toString(),
-                CommonBean.DEBUG_SERVER_AVATAR_RELATIVE_PATH, FileUtil.USER_AVATAR_PREFIX);
+//        String AvatarUrl = FileUtil.upload(image, aId.toString(),
+//                CommonBean.DEBUG_SERVER_AVATAR_RELATIVE_PATH, FileUtil.USER_AVATAR_PREFIX);
         if (AvatarUrl == null) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_ACCOUNT_UPLOAD_FILE_FAIL_CODE,
