@@ -32,6 +32,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         String phone = request.getHeader("phone");
 
         logger.info("------------AuthenticationInterceptor-------------");
+        logger.info(request.getRequestURL().toString());
         logger.info("token ：" + token);
         logger.info("phone ：" + phone);
         if (null == token || null == phone) {
