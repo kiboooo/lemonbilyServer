@@ -24,45 +24,44 @@
   </insert>
 
   <delete id="deleteByLikeID">
-    DELETE FROM "like"
+    DELETE FROM `like`
     WHERE LikeID = #{ likeID,jdbcType=INTEGER }
   </delete>
 
   <delete id="deleteByUserIDAndPalID">
-    DELETE FROM "like"
+    DELETE FROM `like`
     WHERE LUserID = #{ userID,jdbcType=INTEGER } AND LToPalID = #{palID,jdbcType=INTEGER}
   </delete>
 
 
   <select id="selectAll" resultMap="BaseResultMap">
 
-    select LikeID, LUserID, LToPalID
-    from like
+    select * from `like`
   </select>
 
   <select id="selectLikeNumberByPalID" resultType="java.lang.Integer" >
     select count(*)
-    from "like" where LToPalID = #{palID,jdbcType=INTEGER}
+    from `like` where LToPalID = #{palID,jdbcType=INTEGER}
   </select>
 
   <select id="selectByLikeID" resultMap="BaseResultMap" >
     select *
-    from "like" where LikeID = #{ likeID,jdbcType=INTEGER }
+    from `like` where LikeID = #{ likeID,jdbcType=INTEGER }
   </select>
 
   <select id="selectByUserID" resultMap="BaseResultMap" >
     select *
-    from "like" where LUserID = #{ userID,jdbcType=INTEGER }
+    from `like` where LUserID = #{ userID,jdbcType=INTEGER }
   </select>
 
   <select id="selectByPalID" resultMap="BaseResultMap">
     select *
-    from "like" where LToPalID = #{palID,jdbcType=INTEGER}
+    from `like` where LToPalID = #{palID,jdbcType=INTEGER}
   </select>
 
   <select id="selectByUserIDAndPalID" resultMap="BaseResultMap">
     select *
-    from "like" where LUserID = #{ userID,jdbcType=INTEGER } AND LToPalID = #{palID,jdbcType=INTEGER}
+    from `like` where LUserID = #{ userID,jdbcType=INTEGER } AND LToPalID = #{palID,jdbcType=INTEGER}
   </select>
 
 </mapper>

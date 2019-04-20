@@ -167,7 +167,7 @@ public class LikeController extends BaseController<Like> {
             produces = "application/json;charset=UTF-8"
     )
     public String selectByUserID(int userID) {
-        if (userID <= 1000) {
+        if (userID < 1000) {
             return  JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
                             ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null)
@@ -215,7 +215,7 @@ public class LikeController extends BaseController<Like> {
             produces = "application/json;charset=UTF-8"
     )
     public String selectByUserIDAndPalID(int userID ,int palID) {
-        if (userID <= 1000) {
+        if (userID < 1000) {
             return  JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
                             ResponseCodeUtil.LEMONBILY_LIKE_USERID_ILLEGAL_CONTENT, null)
