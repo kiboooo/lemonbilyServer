@@ -15,7 +15,7 @@ public class WebApplicationConfig  implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         //移除登陆，注册，以及与播放视频相关的请求路径验证
         String[] commonEx = {
-                "/error/**","/picture/**",
+                "/error/**","/picture/**","/video/**",
                 "/LoginController/registered","/LoginController/login",
                 "/SeriesController/**","/VideoController/**"};
 
