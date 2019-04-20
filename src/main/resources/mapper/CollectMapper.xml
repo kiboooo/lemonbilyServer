@@ -59,7 +59,7 @@
 
   <select id="selectByColIDAndVID" resultMap="BaseResultMap">
     select *
-    from collect int not null where ColID = #{ colID,jdbcType=INTEGER } AND VID = #{vid,jdbcType=INTEGER}
+    from collect  where ColID = #{ colID,jdbcType=INTEGER } AND VID = #{vid,jdbcType=INTEGER}
   </select>
 
   <select id="selectCollectNumberByVID" resultType="java.lang.Integer" >

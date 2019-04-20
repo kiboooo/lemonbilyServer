@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/PalCircleController")
+@RequestMapping("/LikeController")
 public class LikeController extends BaseController<Like> {
 
     @Autowired(required = false)
@@ -61,7 +61,7 @@ public class LikeController extends BaseController<Like> {
 
     @Override
     @Transactional
-    @RequestMapping(value = "/deleteByPalID",
+    @RequestMapping(value = "/deleteByLikeID",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )

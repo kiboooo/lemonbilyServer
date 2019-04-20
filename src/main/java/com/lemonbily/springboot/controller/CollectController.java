@@ -166,7 +166,7 @@ public class CollectController extends BaseController<Collect> {
             produces = "application/json;charset=UTF-8"
     )
     public String selectByColID(int colID) {
-        if (colID <= 1000) {
+        if (colID < 1000) {
             return  JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
                             ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null)
@@ -214,7 +214,7 @@ public class CollectController extends BaseController<Collect> {
             produces = "application/json;charset=UTF-8"
     )
     public String selectByColIDAndVID(int colID ,int vid) {
-        if (colID <= 1000) {
+        if (colID < 1000) {
             return  JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
                             ResponseCodeUtil.LEMONBILY_COLLECT_USERID_ILLEGAL_CONTENT, null)
