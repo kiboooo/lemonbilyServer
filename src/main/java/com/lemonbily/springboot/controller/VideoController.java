@@ -2,6 +2,7 @@ package com.lemonbily.springboot.controller;
 
 import com.lemonbily.springboot.entity.Video;
 import com.lemonbily.springboot.mapper.VideoMapper;
+import com.lemonbily.springboot.util.FileUtil;
 import com.lemonbily.springboot.util.JsonUtil;
 import com.lemonbily.springboot.util.ResponseCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,15 +58,24 @@ public class VideoController extends BaseController<Video> {
                             ResponseCodeUtil.LEMONBILY_DELETE_ID_ILLEGAL_CONTENT, null)
                     .toJSONString();
         }
-        if (videoMapper.deleteByVID(vid) < 1) {
+        String delMsg = null;
+        Video delVideo = videoMapper.selectByVID(vid);
+        if (null == delVideo ||  videoMapper.deleteByVID(vid) < 1) {
+            delMsg = "获取的video对象为空,无法删除";
            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE_CONTENT, null)
+                            ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE_CONTENT, delMsg)
                     .toJSONString();
+        }
+        if (FileUtil.delFile(delVideo.getVpath())
+                && FileUtil.delFile(delVideo.getVpicture()) ) {
+            delMsg = "视频,图片资源删除完毕";
+        } else {
+            delMsg = "视频,图片资源删除失败，或路径不存在";
         }
         return  JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, null)
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, delMsg)
                 .toJSONString();
     }
 

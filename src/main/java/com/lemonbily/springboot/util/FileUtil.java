@@ -125,4 +125,19 @@ public class FileUtil {
         return filePaths;
     }
 
+    /**
+     * 删除文件
+     *
+     * @param AbsPath 需要删除文件的绝对地址
+     * @return 是否删除成功
+     */
+    public static boolean delFile(String AbsPath) {
+        if (null == AbsPath || AbsPath.equals("")) {
+            return false;
+        }
+        File delf = new File(AbsPath);
+        return delf.exists() && delf.delete();
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package com.lemonbily.springboot.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lemonbily.springboot.bean.CommonBean;
 import com.lemonbily.springboot.entity.Account;
 import com.lemonbily.springboot.mapper.AccountMapper;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.rmi.activation.ActivationID;
 import java.util.List;
 
 @RestController
@@ -65,15 +67,23 @@ public class AccountController extends BaseController<Account> {
                             ResponseCodeUtil.LEMONBILY_ACCOUNT_AID_FAIL_CODE_CONTENT, null)
                     .toJSONString();
         }
-        if (accountMapper.deleteByID(AId) < 1) {
+        String delMsg = null;
+        Account delAccount = accountMapper.selectByID(AId);
+        if (null == delAccount || accountMapper.deleteByID(AId) < 1) {
+            delMsg = "获取的Account对象为空,无法删除";
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE_CONTENT, null)
+                            ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE_CONTENT, delMsg)
                     .toJSONString();
+        }
+        if (FileUtil.delFile(delAccount.getAavatar())) {
+            delMsg = "头像图片删除完毕";
+        } else {
+            delMsg = "头像图片删除失败，或路径不存在";
         }
         return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, null)
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, delMsg)
                 .toJSONString();
     }
 
