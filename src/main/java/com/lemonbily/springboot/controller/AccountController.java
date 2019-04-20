@@ -56,6 +56,7 @@ public class AccountController extends BaseController<Account> {
     }
 
     @Override
+    @Transactional
     @RequestMapping(value = "/deleteByID",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
