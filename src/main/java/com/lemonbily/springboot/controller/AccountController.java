@@ -192,12 +192,12 @@ public class AccountController extends BaseController<Account> {
                     .toJSONString();
         }
 //        服务器环境
-//        String AvatarUrl = FileUtil.upload(image, aId.toString(),
-//                CommonBean.SERVER_AVATAR_RELATIVE_PATH, FileUtil.USER_AVATAR_PREFIX, image.getOriginalFilename());
+        List AvatarUrl = FileUtil.upload(image, aId.toString(),
+                CommonBean.SERVER_AVATAR_RELATIVE_PATH, FileUtil.USER_AVATAR_PREFIX);
 
         //debug环境
-        List AvatarUrl = FileUtil.upload(image, aId.toString(),
-                CommonBean.DEBUG_SERVER_AVATAR_RELATIVE_PATH, FileUtil.USER_AVATAR_PREFIX);
+//        List AvatarUrl = FileUtil.upload(image, aId.toString(),
+//                CommonBean.DEBUG_SERVER_AVATAR_RELATIVE_PATH, FileUtil.USER_AVATAR_PREFIX);
         if (AvatarUrl == null) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_ACCOUNT_UPLOAD_FILE_FAIL_CODE,
