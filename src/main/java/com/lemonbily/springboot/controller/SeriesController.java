@@ -92,8 +92,8 @@ public class SeriesController extends BaseController<Series> {
         }
         if (seriesMapper.update(record) < 1) {
             return JsonUtil
-                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE_CONTENT, null)
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_UPDATE_ERRO_CODE,
+                            ResponseCodeUtil.LEMONBILY_UPDATE_ERRO_CODE_CONTENT, null)
                     .toJSONString();
         }
         return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
