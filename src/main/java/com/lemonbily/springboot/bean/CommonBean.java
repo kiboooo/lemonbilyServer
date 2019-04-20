@@ -14,5 +14,6 @@ public class CommonBean {
     //阿里云上存放图片静态资源的路径
     public static final String PICTURE_SERVER_PATH = "/lemonbily/picture/";
     public static final String VIDEO_SERVER_PATH = "/lemonbily/video/";
+    public static final String AVATAR_SERVER_PATH = "/lemonbily/Account/";
 
 }

@@ -15,7 +15,7 @@ public class WebApplicationConfig  implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         //移除登陆，注册，以及与播放视频相关的请求路径验证
         String[] commonEx = {
-                "/error/**","/picture/**","/video/**",
+                "/error/**","/picture/**","/video/**","/Account/**",
                 "/LoginController/registered","/LoginController/login",
                 "/SeriesController/**","/VideoController/**"};
 
@@ -28,6 +28,10 @@ public class WebApplicationConfig  implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/picture/**")
                 .addResourceLocations("file:" + CommonBean.PICTURE_SERVER_PATH);
+
+        registry.addResourceHandler("/Account/**")
+                .addResourceLocations("file:" + CommonBean.AVATAR_SERVER_PATH);
+
         registry.addResourceHandler("/video/**")
                 .addResourceLocations("file:" + CommonBean.VIDEO_SERVER_PATH);
     }
