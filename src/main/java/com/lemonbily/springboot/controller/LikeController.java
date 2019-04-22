@@ -1,5 +1,6 @@
 package com.lemonbily.springboot.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lemonbily.springboot.entity.Like;
 import com.lemonbily.springboot.mapper.LikeMapper;
 import com.lemonbily.springboot.util.JsonUtil;
@@ -26,37 +27,33 @@ public class LikeController extends BaseController<Like> {
     @RequestMapping(value = "/insert",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
-    public String insert(@RequestBody Like record) {
+    public JSONObject insert(@RequestBody Like record) {
         logger.info("----------插入开始-----------");
         if (null == record) {
             logger.error("接收的对象为空");
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_INSERT_ERRO_CODE,
-                    ResponseCodeUtil.LEMONBILY_OBJECT_NULL_CONTENT, null)
-                    .toJSONString();
+                    ResponseCodeUtil.LEMONBILY_OBJECT_NULL_CONTENT, null);
         }
         if (null == record.getLuserid() || record.getLuserid() < 1000) {
             logger.error("接收的userID是非法id");
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LIKE_ILLEGAL_CODE,
-                    ResponseCodeUtil.LEMONBILY_LIKE_USERID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                    ResponseCodeUtil.LEMONBILY_LIKE_USERID_ILLEGAL_CONTENT, null);
         }
+
 
         if (null == record.getLtopalid() || record.getLtopalid() <= 0) {
             logger.error("接收的PALID是非法ID");
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LIKE_ILLEGAL_CODE,
-                    ResponseCodeUtil.LEMONBILY_LIKE_PALID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                    ResponseCodeUtil.LEMONBILY_LIKE_PALID_ILLEGAL_CONTENT, null);
         }
 
         if (likeMapper.insert(record) < 1) {
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_INSERT_ERRO_CODE,
-                    ResponseCodeUtil.LEMONBILY_INSERT_ERRO_CODE_CONTENT, null)
-                    .toJSONString();
+                    ResponseCodeUtil.LEMONBILY_INSERT_ERRO_CODE_CONTENT, null);
         }
         logger.info("----------插入结束-----------");
         return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, record)
-                .toJSONString();
+                ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, record);
     }
 
     @Override
@@ -65,23 +62,20 @@ public class LikeController extends BaseController<Like> {
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String deleteByID(int likeID) {
+    public JSONObject deleteByID(int likeID) {
         if (likeID <= 0) {
-            return  JsonUtil
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_DELETE_ID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_DELETE_ID_ILLEGAL_CONTENT, null);
         }
         if (likeMapper.deleteByLikeID(likeID) < 1) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE_CONTENT, null);
         }
-        return  JsonUtil
+        return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, null)
-                .toJSONString();
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, null);
     }
 
     @Transactional
@@ -89,33 +83,29 @@ public class LikeController extends BaseController<Like> {
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String deleteByUserIDAndPalID(int userID ,int palID) {
+    public JSONObject deleteByUserIDAndPalID(int userID ,int palID) {
         if (userID < 1000) {
-            return  JsonUtil
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_LIKE_USERID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_LIKE_USERID_ILLEGAL_CONTENT, null);
         }
         if (palID <= 0) {
-            return  JsonUtil
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_LIKE_PALID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_LIKE_PALID_ILLEGAL_CONTENT, null);
         }
         if (likeMapper.deleteByUserIDAndPalID(userID, palID) < 1) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE_CONTENT, null);
         }
-        return  JsonUtil
+        return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, null)
-                .toJSONString();
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, null);
     }
 
     @Override
-    public String update(Like record) {
+    public JSONObject update(Like record) {
         return null;
     }
 
@@ -123,18 +113,16 @@ public class LikeController extends BaseController<Like> {
     @RequestMapping(value = "/selectAll",
             produces = "application/json;charset=UTF-8"
     )
-    public String selectAll() {
+    public JSONObject selectAll() {
         List<Like> likeList = likeMapper.selectAll();
         if (null == likeList) {
             logger.error("查询不到Like列表中的数据");
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null);
         }
         return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, likeList)
-                .toJSONString();
+                ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, likeList);
     }
 
     @Override
@@ -142,102 +130,89 @@ public class LikeController extends BaseController<Like> {
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String selectByID(int likeID) {
+    public JSONObject selectByID(int likeID) {
         if (likeID <= 0) {
-            return  JsonUtil
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null);
         }
         Like curLike = likeMapper.selectByLikeID(likeID);
         if (null == curLike){
-            return  JsonUtil
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null);
         }
         return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curLike)
-                .toJSONString();
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curLike);
     }
 
     @RequestMapping(value = "/selectByUserID",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String selectByUserID(int userID) {
+    public JSONObject selectByUserID(int userID) {
         if (userID < 1000) {
-            return  JsonUtil
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null);
         }
         List<Like> curLikeList = likeMapper.selectByUserID(userID);
         if (null == curLikeList || curLikeList.size() == 0){
-            return  JsonUtil
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null);
         }
         return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curLikeList)
-                .toJSONString();
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curLikeList);
     }
 
     @RequestMapping(value = "/selectByPalID",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String selectByPalID(int palID) {
+    public JSONObject selectByPalID(int palID) {
         if (palID <= 0) {
-            return  JsonUtil
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null);
         }
         List<Like> curLikeList = likeMapper.selectByPalID(palID);
         if (null == curLikeList || curLikeList.size() == 0){
-            return  JsonUtil
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null);
         }
         return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curLikeList)
-                .toJSONString();
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curLikeList);
     }
 
     @RequestMapping(value = "/selectByUserIDAndPalID",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String selectByUserIDAndPalID(int userID ,int palID) {
+    public JSONObject selectByUserIDAndPalID(int userID ,int palID) {
         if (userID < 1000) {
-            return  JsonUtil
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_LIKE_USERID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_LIKE_USERID_ILLEGAL_CONTENT, null);
         }
         if (palID <= 0) {
-            return  JsonUtil
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_LIKE_PALID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_LIKE_PALID_ILLEGAL_CONTENT, null);
         }
         Like curLike = likeMapper.selectByUserIDAndPalID(userID, palID);
         if (null == curLike){
-            return  JsonUtil
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null);
         }
         return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curLike)
-                .toJSONString();
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curLike);
     }
 
 
@@ -245,17 +220,15 @@ public class LikeController extends BaseController<Like> {
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String selectLikeNumberByPalID(int palID) {
+    public JSONObject selectLikeNumberByPalID(int palID) {
         if (palID <= 0) {
-            return  JsonUtil
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null);
         }
         int curLikeNumber = likeMapper.selectLikeNumberByPalID(palID);
         return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curLikeNumber)
-                .toJSONString();
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curLikeNumber);
     }
 }

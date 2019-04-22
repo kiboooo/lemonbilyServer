@@ -1,5 +1,6 @@
 package com.lemonbily.springboot.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lemonbily.springboot.entity.Comment;
 import com.lemonbily.springboot.mapper.CommentMapper;
 import com.lemonbily.springboot.util.JsonUtil;
@@ -20,29 +21,26 @@ public class CommentController extends BaseController<Comment> {
     @RequestMapping(value = "/insert",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
-    public String insert(@RequestBody Comment record) {
+    public JSONObject
+    insert(@RequestBody Comment record) {
         logger.info("----------插入开始-----------");
         if (null == record) {
             logger.error("接收的对象为空");
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_INSERT_ERRO_CODE,
-                    ResponseCodeUtil.LEMONBILY_OBJECT_NULL_CONTENT, null)
-                    .toJSONString();
+                    ResponseCodeUtil.LEMONBILY_OBJECT_NULL_CONTENT, null);
         }
         if (null == record.getUid() || record.getUid() < 1000) {
             logger.error("接收的Uid是非法id");
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_COMMENT_ID_ILLEGAL_CODE,
-                    ResponseCodeUtil.LEMONBILY_COMMENT_UID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                    ResponseCodeUtil.LEMONBILY_COMMENT_UID_ILLEGAL_CONTENT, null);
         }
         if (commentMapper.insert(record) < 1) {
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_INSERT_ERRO_CODE,
-                    ResponseCodeUtil.LEMONBILY_INSERT_ERRO_CODE_CONTENT, null)
-                    .toJSONString();
+                    ResponseCodeUtil.LEMONBILY_INSERT_ERRO_CODE_CONTENT, null);
         }
         logger.info("----------插入结束-----------");
         return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, record)
-                .toJSONString();
+                ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, record);
     }
 
     @Override
@@ -50,30 +48,27 @@ public class CommentController extends BaseController<Comment> {
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String deleteByID(int comID) {
+    public JSONObject deleteByID(int comID) {
         if (comID <= 0) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_DELETE_ID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_DELETE_ID_ILLEGAL_CONTENT, null);
         }
         if (commentMapper.deleteByComID(comID) < 1) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE_CONTENT, null);
         }
         return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, null)
-                .toJSONString();
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, null);
     }
 
     /**
      * 无需更改操作函数
      */
     @Override
-    public String update(Comment record) {
+    public JSONObject update(Comment record) {
         return null;
     }
 
@@ -81,18 +76,16 @@ public class CommentController extends BaseController<Comment> {
     @RequestMapping(value = "/selectAll",
             produces = "application/json;charset=UTF-8"
     )
-    public String selectAll() {
+    public JSONObject selectAll() {
         List<Comment> commentList = commentMapper.selectAll();
         if (null == commentList) {
             logger.error("查询不到comment列表中的数据");
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null);
         }
         return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, commentList)
-                .toJSONString();
+                ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, commentList);
     }
 
     @Override
@@ -100,24 +93,21 @@ public class CommentController extends BaseController<Comment> {
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String selectByID(int comID) {
+    public JSONObject selectByID(int comID) {
         if (comID <= 0) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null);
         }
         Comment curComment = commentMapper.selectByComID(comID);
         if (null == curComment) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null);
         }
         return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curComment)
-                .toJSONString();
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curComment);
     }
 
 
@@ -125,90 +115,79 @@ public class CommentController extends BaseController<Comment> {
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String selectByUID(int uid) {
+    public JSONObject selectByUID(int uid) {
         if (uid < 1000) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null);
         }
         List<Comment> curCommentList = commentMapper.selectByUID(uid);
         if (null == curCommentList || curCommentList.size() == 0) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null);
         }
         return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curCommentList)
-                .toJSONString();
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curCommentList);
     }
 
     @RequestMapping(value = "/selectByUIDAndType",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String selectByUIDAndType(int uid,int comtype) {
+    public JSONObject selectByUIDAndType(int uid,int comtype) {
         if ( uid < 1000) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null);
         }
         if (!Comment.COMMENT_TYPE.containsKey(comtype)) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_COMMENT_TYPE_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_COMMENT_TYPE_ILLEGAL_CONTENT, null);
         }
         List<Comment> curCommentList = commentMapper.selectByUIDAndType(uid, comtype);
         if (null == curCommentList || curCommentList.size() == 0) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null);
         }
         return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curCommentList)
-                .toJSONString();
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curCommentList);
     }
 
     @RequestMapping(value = "/selectByUIDAndTypeAndToID",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String selectByUIDAndTypeAndToID( int uid,int comtype,int toid) {
+    public JSONObject selectByUIDAndTypeAndToID( int uid,int comtype,int toid) {
         if ( uid < 1000) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null);
         }
+
         if (!Comment.COMMENT_TYPE.containsKey(comtype)) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_COMMENT_TYPE_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_COMMENT_TYPE_ILLEGAL_CONTENT, null);
         }
         if ( toid <= 0){
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_COMMENT_TOID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_COMMENT_TOID_ILLEGAL_CONTENT, null);
         }
         List<Comment> curCommentList = commentMapper.selectByUIDAndTypeAndToID(uid, comtype,toid);
         if (null == curCommentList || curCommentList.size() == 0) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null);
         }
         return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curCommentList)
-                .toJSONString();
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curCommentList);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.lemonbily.springboot.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lemonbily.springboot.mapper.AccountMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,17 +17,17 @@ public abstract class BaseController<T> {
     Logger logger = LoggerFactory.getLogger(this.getClass()); //日志对象
 
     //插入数据
-    public abstract String insert(T record);
+    public abstract JSONObject insert(T record);
 
     //删除数据
-    public abstract String deleteByID(int id);
+    public abstract JSONObject deleteByID(int id);
 
     //更改数据
-    public abstract String update(T record);
+    public abstract JSONObject update(T record);
 
     //批量查询
-    public abstract String selectAll();
+    public abstract JSONObject selectAll();
 
     //根据ID查询
-    public abstract String selectByID(int id);
+    public abstract JSONObject selectByID(int id);
 }

@@ -1,5 +1,6 @@
 package com.lemonbily.springboot.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lemonbily.springboot.entity.Account;
 import com.lemonbily.springboot.entity.Buddy;
 import com.lemonbily.springboot.mapper.AccountMapper;
@@ -49,13 +50,12 @@ public class BuddyController extends BaseController<Buddy>{
     @RequestMapping(value = "/insert",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
-    public String insert(@RequestBody Buddy record) {
+    public JSONObject insert(@RequestBody Buddy record) {
         logger.info("----------插入开始-----------");
         if (null == record) {
             logger.error("接收的对象为空");
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_INSERT_ERRO_CODE,
-                    ResponseCodeUtil.LEMONBILY_OBJECT_NULL_CONTENT, null)
-                    .toJSONString();
+                    ResponseCodeUtil.LEMONBILY_OBJECT_NULL_CONTENT, null);
         }
         logger.info(record.toString());
         if (null == record.getBuddyid() || null == record.getUserid() ||
@@ -64,21 +64,18 @@ public class BuddyController extends BaseController<Buddy>{
 
             logger.error("接收的UserID是非法id");
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_BUDDY_ILLEGAL_CODE,
-                    ResponseCodeUtil.LEMONBILY_BUDDY_USERID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                    ResponseCodeUtil.LEMONBILY_BUDDY_USERID_ILLEGAL_CONTENT, null);
         }
         if (record.getUserid() > record.getBuddyid()) {
             swap(record);
         }
         if (buddyMapper.insert(record) < 1) {
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_INSERT_ERRO_CODE,
-                    ResponseCodeUtil.LEMONBILY_INSERT_ERRO_CODE_CONTENT, null)
-                    .toJSONString();
+                    ResponseCodeUtil.LEMONBILY_INSERT_ERRO_CODE_CONTENT, null);
         }
         logger.info("----------插入结束-----------");
         return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, record)
-                .toJSONString();
+                ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, record);
     }
 
     @Override
@@ -86,23 +83,20 @@ public class BuddyController extends BaseController<Buddy>{
     @RequestMapping(value = "/deleteByBID",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
-    public String deleteByID(int bid) {
+    public JSONObject deleteByID(int bid) {
         if (bid <= 0) {
-            return  JsonUtil
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_DELETE_ID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_DELETE_ID_ILLEGAL_CONTENT, null);
         }
         if (buddyMapper.deleteByBID(bid) < 1) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE_CONTENT, null);
         }
-        return  JsonUtil
+        return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, null)
-                .toJSONString();
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, null);
     }
 
     @Transactional
@@ -110,27 +104,24 @@ public class BuddyController extends BaseController<Buddy>{
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String deleteByUIDandBuddlyID( int userID, int buddyID) {
+    public JSONObject deleteByUIDandBuddlyID( int userID, int buddyID) {
         if (userID < 1000 || buddyID < 1000 || buddyID == userID) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_BUDDY_USERID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_BUDDY_USERID_ILLEGAL_CONTENT, null);
         }
         if (buddyMapper.deleteByUIDandBuddlyID(userID, buddyID) < 1) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE_CONTENT, null);
         }
-        return  JsonUtil
+        return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, null)
-                .toJSONString();
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, null);
     }
 
     @Override
-    public String update(Buddy record) {
+    public JSONObject update(Buddy record) {
         return null;
     }
 
@@ -138,18 +129,16 @@ public class BuddyController extends BaseController<Buddy>{
     @RequestMapping(value = "/selectAll",
             produces = "application/json;charset=UTF-8"
     )
-    public String selectAll() {
+    public JSONObject selectAll() {
         List<Buddy> buddyList = buddyMapper.selectAll();
         if (null == buddyList) {
             logger.error("查询不到Buddy列表中的数据");
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null);
         }
         return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, buddyList)
-                .toJSONString();
+                ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, buddyList);
     }
 
     @Override
@@ -157,44 +146,40 @@ public class BuddyController extends BaseController<Buddy>{
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String selectByID(int bid) {
+    public JSONObject selectByID(int bid) {
         if (bid <= 0) {
-            return  JsonUtil
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null);
         }
         Buddy curBuddy = buddyMapper.selectByBID(bid);
         if (null == curBuddy){
-            return  JsonUtil
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null);
         }
         return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curBuddy)
-                .toJSONString();
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curBuddy);
     }
     @Transactional
     @RequestMapping(value = "/selectByUserID",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public String selectByUserID(int userID) {
+    public JSONObject selectByUserID(int userID) {
         if (userID < 1000) {
-            return  JsonUtil
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null);
         }
         List<Integer> curBuddyIDList = buddyMapper.selectByUserID(userID);
         if (null == curBuddyIDList || curBuddyIDList.size() == 0){
-            return  JsonUtil
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null);
         }
+
         List<Account> curAccountList = new ArrayList<>();
         for (Integer uid : curBuddyIDList) {
             if (uid < 1000) continue;
@@ -203,15 +188,13 @@ public class BuddyController extends BaseController<Buddy>{
             curAccountList.add(accountBody);
         }
         if (curAccountList.size() <= 0) {
-            return  JsonUtil
+            return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
-                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null)
-                    .toJSONString();
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null);
         }
         return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curAccountList)
-                .toJSONString();
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, curAccountList);
     }
 
     private void swap(Buddy buddy) {
