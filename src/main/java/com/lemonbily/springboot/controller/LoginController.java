@@ -6,6 +6,7 @@ import com.lemonbily.springboot.bean.CommonBean;
 import com.lemonbily.springboot.bean.Token;
 import com.lemonbily.springboot.entity.Login;
 import com.lemonbily.springboot.mapper.LoginMapper;
+import com.lemonbily.springboot.util.CommonUtils;
 import com.lemonbily.springboot.util.JsonUtil;
 import com.lemonbily.springboot.util.ResponseCodeUtil;
 import com.lemonbily.springboot.util.TokenUtil;
@@ -117,17 +118,18 @@ public class LoginController extends BaseController<Login> {
      * 用户普通注销接口
      * 主要清除TokenUtils 中存放的Token
      *
-     * @param id
+     * @param phone
      * @return
      */
     @RequestMapping(value = "/logout",
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public JSONObject logout(@RequestParam(value = "lphone") int id) {
-        if (id < 1000) {
+    public JSONObject logout(@RequestParam(value = "lphone") String phone) {
+        //电话有效性的检验
+        if (!CommonUtils.isMobile(phone)) {
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_LOGOUT_FAIL_CODE,
                     ResponseCodeUtil.LEMONBILY_LOGIN_LOGOUT_FAIL_CODE_CONTENT, null);
         }
-        TokenUtil.removeToken(String.valueOf(id));
+        TokenUtil.removeToken(String.valueOf(phone));
         return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
                 ResponseCodeUtil.LEMONBILY_LOGIN_LOGOUT_SUCCESS_CODE_CONTENT, null);
     }
