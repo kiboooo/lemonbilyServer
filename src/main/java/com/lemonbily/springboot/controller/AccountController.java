@@ -157,7 +157,7 @@ public class AccountController extends BaseController<Account> {
             }
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                            ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, avatarUrl);
+                            ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, account);
         }
     }
 

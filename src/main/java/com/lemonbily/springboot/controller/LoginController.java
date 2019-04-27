@@ -3,15 +3,13 @@ package com.lemonbily.springboot.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lemonbily.springboot.bean.CommonBean;
-import com.lemonbily.springboot.bean.Token;
 import com.lemonbily.springboot.entity.Login;
+import com.lemonbily.springboot.mapper.AccountMapper;
 import com.lemonbily.springboot.mapper.LoginMapper;
 import com.lemonbily.springboot.util.CommonUtils;
 import com.lemonbily.springboot.util.JsonUtil;
 import com.lemonbily.springboot.util.ResponseCodeUtil;
 import com.lemonbily.springboot.util.TokenUtil;
-import org.apache.ibatis.annotations.Param;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -32,10 +30,11 @@ public class LoginController extends BaseController<Login> {
      * method : post
      * 参数：login对象的json数据
      *
-     * @param record
+     * @param
      * @return
      */
     @Override
+    @Transactional
     @RequestMapping(value = "/registered",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
@@ -44,7 +43,7 @@ public class LoginController extends BaseController<Login> {
         /*
          *  校验传入对象开始
          */
-        if (null == record) {
+        if (null == record ) {
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_INSERT_ERRO_CODE,
                     ResponseCodeUtil.LEMONBILY_OBJECT_NULL_CONTENT, null);
         }
@@ -69,10 +68,11 @@ public class LoginController extends BaseController<Login> {
          *  校验传入对象结束
          */
         logger.info("-------- 注册接口校验传入对象结束 -------");
-        String mToken = TokenUtil.generateTokenAddMap(record);
         Login insertFinishData = loginMapper.selectByPhone(record.getLphone());
+        String mToken = TokenUtil.generateTokenAddMap(insertFinishData);
         return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
                 ResponseCodeUtil.LEMONBILY_LOGIN_REGISTER_SUCCESS_CONTENT, mToken, insertFinishData);
+
     }
 
     /**
@@ -155,6 +155,7 @@ public class LoginController extends BaseController<Login> {
 
 
     @Override
+    @Transactional
     public JSONObject update(Login record) {
         if (null == record ) {
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_UPDATE_ERRO_CODE,
@@ -164,8 +165,9 @@ public class LoginController extends BaseController<Login> {
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_LOGIN_CHANGE_PASSWORD_FAIL_CODE,
                     ResponseCodeUtil.LEMONBILY_LOGIN_CHANGE_PASSWORD_FAIL_CODE_CONTENT, null);
         }
+        Login updateFinishData = loginMapper.selectByPhone(record.getLphone());
         return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
-                ResponseCodeUtil.LEMONBILY_LOGIN_CHANGE_PASSWORD_SUCCESS_CODE_CONTENT, null);
+                ResponseCodeUtil.LEMONBILY_LOGIN_CHANGE_PASSWORD_SUCCESS_CODE_CONTENT, updateFinishData);
     }
 
     /**
