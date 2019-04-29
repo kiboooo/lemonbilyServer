@@ -58,15 +58,15 @@ public class AccountController extends BaseController<Account> {
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public JSONObject deleteByID(int AId) {
-        if (AId < 1000) {
+    public JSONObject deleteByID(int aid) {
+        if (aid < 1000) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_FAIL_CODE,
                             ResponseCodeUtil.LEMONBILY_ACCOUNT_AID_FAIL_CODE_CONTENT, null);
         }
         String delMsg = null;
-        Account delAccount = accountMapper.selectByID(AId);
-        if (null == delAccount || accountMapper.deleteByID(AId) < 1) {
+        Account delAccount = accountMapper.selectByID(aid);
+        if (null == delAccount || accountMapper.deleteByID(aid) < 1) {
             delMsg = "获取的Account对象为空,无法删除";
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
@@ -220,13 +220,13 @@ public class AccountController extends BaseController<Account> {
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8"
     )
-    public JSONObject selectByID(int AId) {
-        if (AId < 1000) {
+    public JSONObject selectByID(int aid) {
+        if (aid < 1000) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
                             ResponseCodeUtil.LEMONBILY_ACCOUNT_AID_FAIL_CODE_CONTENT, null);
         }
-        Account account = accountMapper.selectByID(AId);
+        Account account = accountMapper.selectByID(aid);
         if (account == null) {
            return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
                     ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null);

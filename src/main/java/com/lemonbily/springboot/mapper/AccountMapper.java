@@ -22,9 +22,10 @@ public interface AccountMapper {
      */
     List<Account> selectAll();
 
-    Account selectByID(@Param("aid") int AId);
+    Account selectByID(@Param("aid") int aid);
 
     int update(Account account);
 
-    int deleteByID(@Param("aid") int AId);
+    int deleteByID(@Param("aid") int aid
+    );
 }
