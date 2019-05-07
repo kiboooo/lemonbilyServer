@@ -19,7 +19,7 @@
     <selectKey keyProperty="likeid" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into like (LUserID, LTOUserID)
+    insert into `like` (LUserID, LToPalID)
     values (#{luserid,jdbcType=INTEGER}, #{ltopalid,jdbcType=INTEGER})
   </insert>
 
