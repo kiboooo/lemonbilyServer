@@ -24,7 +24,7 @@
         WHERE ComID = #{ comID,jdbcType=INTEGER}
     </delete>
 
-    <select id="selectByComID" resultMap="BaseResultMap" >
+    <select id="selectByComID" resultMap="BaseResultMap">
     select *
     from comment where ComID = #{comID,jdbcType=INTEGER}
   </select>
@@ -38,6 +38,12 @@
     <select id="selectByUIDAndType" resultMap="BaseResultMap">
         select *
         from comment where `UID` = #{uid,jdbcType=INTEGER}
+        AND ComType = #{comtype,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByToIDAndType" resultMap="BaseResultMap">
+        select *
+        from comment where ToID = #{toid,jdbcType=INTEGER}
         AND ComType = #{comtype,jdbcType=INTEGER}
     </select>
 

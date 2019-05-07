@@ -124,6 +124,7 @@ public class ResponseCodeUtil {
     public static final int LEMONBILY_PALCIRCLE_ILLEGAL_CODE = 1501;
     public static final String LEMONBILY_PALCIRCLE_PALID_ILLEGAL_CONTENT = "接收的PALID是非法ID";
     public static final String LEMONBILY_PALCIRCLE_PALUSER_ID_ILLEGAL_CONTENT = "接收的PALUSERID是非法ID";
+    public static final String LEMONBILY_PALCIRCLE_PRODUCE_SQUARE_ERROR_CONTENT = "生成广场列表出错";
 
     /**
      * 点赞操作相关状态码

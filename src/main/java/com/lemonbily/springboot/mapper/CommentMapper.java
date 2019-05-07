@@ -28,6 +28,8 @@ public interface CommentMapper {
 
     List<Comment> selectByUIDAndType(@Param("uid")  int uid, @Param("comtype") int comtype);
 
+    List<Comment> selectByToIDAndType(@Param("toid")  int toid, @Param("comtype") int comtype);
+
     List<Comment> selectByUIDAndTypeAndToID(@Param("uid") int uid,
                                             @Param("comtype")int comtype,
                                             @Param("toid")int toid);
