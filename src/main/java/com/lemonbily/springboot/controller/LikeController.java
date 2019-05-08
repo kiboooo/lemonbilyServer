@@ -3,6 +3,7 @@ package com.lemonbily.springboot.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.lemonbily.springboot.entity.Like;
 import com.lemonbily.springboot.mapper.LikeMapper;
+import com.lemonbily.springboot.mapper.PalcircleMapper;
 import com.lemonbily.springboot.util.JsonUtil;
 import com.lemonbily.springboot.util.ResponseCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class LikeController extends BaseController<Like> {
 
     @Autowired(required = false)
     LikeMapper likeMapper;
+
+    @Autowired(required = false)
+    PalcircleMapper palcircleMapper;
 
     @Override
     @Transactional
@@ -51,9 +55,22 @@ public class LikeController extends BaseController<Like> {
             return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_INSERT_ERRO_CODE,
                     ResponseCodeUtil.LEMONBILY_INSERT_ERRO_CODE_CONTENT, null);
         }
+        JSONObject result = updateLikeNum(record.getLtopalid(), 1);
+        if (result != null) {
+            return result;
+        }
         logger.info("----------插入结束-----------");
         return JsonUtil.generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
                 ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, record);
+    }
+
+    private JSONObject updateLikeNum(int pid, int type) {
+        if (palcircleMapper.updateLikeNumber(pid, type > 0 ? 1 : -1) < 1) {
+            return JsonUtil
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_UPDATE_ERRO_CODE,
+                            ResponseCodeUtil.LEMONBILY_UPDATE_ERRO_CODE_CONTENT, null);
+        }
+        return null;
     }
 
     @Override
@@ -68,10 +85,15 @@ public class LikeController extends BaseController<Like> {
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
                             ResponseCodeUtil.LEMONBILY_DELETE_ID_ILLEGAL_CONTENT, null);
         }
-        if (likeMapper.deleteByLikeID(likeID) < 1) {
+        Like curLike = likeMapper.selectByLikeID(likeID);
+        if (curLike == null || likeMapper.deleteByLikeID(likeID) < 1) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
                             ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE_CONTENT, null);
+        }
+        JSONObject result = updateLikeNum(curLike.getLtopalid(), -1);
+        if (result != null) {
+            return result;
         }
         return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
@@ -94,10 +116,15 @@ public class LikeController extends BaseController<Like> {
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
                             ResponseCodeUtil.LEMONBILY_LIKE_PALID_ILLEGAL_CONTENT, null);
         }
-        if (likeMapper.deleteByUserIDAndPalID(userID, palID) < 1) {
+        Like curLike = likeMapper.selectByUserIDAndPalID(userID, palID);
+        if (curLike == null || likeMapper.deleteByUserIDAndPalID(userID, palID) < 1) {
             return JsonUtil
                     .generateJsonResponse(ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE,
                             ResponseCodeUtil.LEMONBILY_DELETE_ERRO_CODE_CONTENT, null);
+        }
+        JSONObject result = updateLikeNum(curLike.getLtopalid(), -1);
+        if (result != null) {
+            return result;
         }
         return JsonUtil
                 .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,

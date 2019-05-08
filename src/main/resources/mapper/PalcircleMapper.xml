@@ -55,7 +55,7 @@
     WHERE PalID = #{ palid,jdbcType=INTEGER }
   </update>
   
-  <update id="updateLike">
+  <update id="updateLikeNumber">
     UPDATE palcircle
     <set>
       <if test="likeType != null ">
