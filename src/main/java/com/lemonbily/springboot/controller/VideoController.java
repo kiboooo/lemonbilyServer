@@ -1,7 +1,12 @@
 package com.lemonbily.springboot.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.lemonbily.springboot.entity.Collect;
 import com.lemonbily.springboot.entity.Video;
+import com.lemonbily.springboot.entity.VideoDetailUIBean;
+import com.lemonbily.springboot.mapper.AccountMapper;
+import com.lemonbily.springboot.mapper.CollectMapper;
+import com.lemonbily.springboot.mapper.CommentMapper;
 import com.lemonbily.springboot.mapper.VideoMapper;
 import com.lemonbily.springboot.util.FileUtil;
 import com.lemonbily.springboot.util.JsonUtil;
