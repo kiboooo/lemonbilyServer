@@ -68,4 +68,34 @@ public class VideoDetailController {
                         ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, videoDetailUIBean);
 
     }
+
+
+    @Transactional
+    @RequestMapping(value = "/getCollectVideoData",
+            method = RequestMethod.POST,
+            produces = "application/json;charset=UTF-8"
+    )
+    public JSONObject getCollectVideoData(@RequestParam(name = "uid") int uid) {
+        if (uid < 1000) {
+            return JsonUtil
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
+                            ResponseCodeUtil.LEMONBILY_SELECT_ID_ILLEGAL_CONTENT, null);
+        }
+        List<Collect> curCollectList = collectMapper.selectByColID(uid);
+        if (curCollectList == null || curCollectList.size() == 0) {
+            return JsonUtil
+                    .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SELECT_ERRO_CODE,
+                            ResponseCodeUtil.LEMONBILY_SELECT_TABLE_NULL_CONTENT, null);
+        }
+        List<Video> videoList = new ArrayList<>();
+        for (Collect collect : curCollectList) {
+            Video video = videoMapper.selectByVID(collect.getVid());
+            if (video != null) {
+                videoList.add(video);
+            }
+        }
+        return JsonUtil
+                .generateJsonResponse(ResponseCodeUtil.LEMONBILY_SUCCESS_CODE,
+                        ResponseCodeUtil.LEMONBILY_SUCCESS_CODE_CONTENT, videoList);
+    }
 }
